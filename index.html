@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maseer Media | AI Video Marketing for Afghan Brands</title>
+    <meta name="description" content="Professional AI-powered video marketing. 4 daily campaigns optimized for Meta platforms.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maseer-purple: #6B21A8;
+            --maseer-gold: #EAB308;
+            --maseer-dark: #0A0A0F;
+            --success: #10B981;
+            --error: #EF4444;
+        }
+        
+        [dir="rtl"] { font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Inter', sans-serif; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; font-size: 16px; }
+        
+        body {
+            font-family: 'Inter', 'Noto Naskh Arabic', sans-serif;
+            background: var(--maseer-dark);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .consciousness-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: linear-gradient(-45deg, var(--maseer-dark), #4c1d95, var(--maseer-purple), var(--maseer-dark));
+            background-size: 400% 400%; animation: gradient 15s ease infinite; opacity: 0.15;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .lang-switcher {
+            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100;
+            display: flex; gap: 0.5rem; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px); padding: 0.5rem; border-radius: 1rem;
+        }
+        
+        .lang-btn {
+            padding: 0.5rem 1rem; background: transparent; border: none;
+            color: rgba(255,255,255,0.6); font-weight: 600; cursor: pointer;
+            border-radius: 0.75rem; transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
+            color: white;
+        }
+        
+        .hero {
+            padding: 5rem 1.5rem 3rem; text-align: center; position: relative;
+        }
+        
+        .logo {
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            color: rgba(255,255,255,0.7); font-size: 1.125rem;
+            max-width: 600px; margin: 0 auto 2rem;
+        }
+        
+        .meta-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(107, 33, 168, 0.2); border: 1px solid rgba(107, 33, 168, 0.4);
+            padding: 0.75rem 1.5rem; border-radius: 9999px;
+            color: var(--maseer-gold); font-weight: 500;
+        }
+        
+        .campaigns-preview {
+            max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;
+        }
+        
+        .section-title {
+            text-align: center; font-size: 1.5rem; margin-bottom: 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .campaigns-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .campaign-card {
+            background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.95));
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem;
+            padding: 1.5rem; transition: all 0.3s;
+        }
+        
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--maseer-purple);
+        }
+        
+        .campaign-time { font-size: 1.75rem; font-weight: 800; color: var(--maseer-gold); }
+        .campaign-lang {
+            display: inline-block; background: rgba(255,255,255,0.1);
+            padding: 0.25rem 0.75rem; border-radius: 9999px;
+            font-size: 0.75rem; margin: 0.5rem 0; text-transform: uppercase;
+        }
+        .campaign-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .campaign-desc { font-size: 0.875rem; color: rgba(255,255,255,0.6); }
+        
+        .form-container {
+            max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+        }
+        
+        .form-card {
+            background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.95));
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem;
+            padding: 2rem;
+        }
+        
+        .form-header {
+            text-align: center; margin-bottom: 2rem;
+        }
+        
+        .form-header h2 {
+            font-size: 1.75rem; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, var(--maseer-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .form-header p { color: rgba(255,255,255,0.6); }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        
+        label {
+            display: block; font-weight: 500; margin-bottom: 0.5rem;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .required::after { content: " *"; color: var(--error); }
+        
+        input, select {
+            width: 100%; padding: 0.875rem 1rem;
+            background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem; color: white; font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none; border-color: var(--maseer-purple);
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .color-group {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+        
+        input[type="color"] {
+            width: 100%; height: 40px; padding: 0; border: none;
+            border-radius: 0.5rem; cursor: pointer; margin-top: 0.5rem;
+        }
+        
+        .upload-zone {
+            border: 2px dashed rgba(255,255,255,0.2); border-radius: 1rem;
+            padding: 2rem; text-align: center; cursor: pointer;
+            transition: all 0.3s; background: rgba(0,0,0,0.2);
+        }
+        
+        .upload-zone:hover, .upload-zone.drag-active {
+            border-color: var(--maseer-purple); background: rgba(107,33,168,0.05);
+        }
+        
+        .upload-zone.has-file {
+            border-color: var(--success); background: rgba(16,185,129,0.05);
+        }
+        
+        .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .upload-text { font-weight: 500; margin-bottom: 0.25rem; }
+        .upload-hint { font-size: 0.875rem; color: rgba(255,255,255,0.5); }
+        
+        .file-preview {
+            display: none; align-items: center; gap: 1rem;
+            margin-top: 1rem; padding: 1rem;
+            background: rgba(16,185,129,0.08); border-radius: 0.75rem;
+        }
+        
+        .file-preview.show { display: flex; }
+        
+        .file-preview img {
+            width: 48px; height: 48px; object-fit: contain;
+            background: white; border-radius: 0.5rem; padding: 0.25rem;
+        }
+        
+        .file-info { flex: 1; text-align: left; }
+        .file-name { font-weight: 600; font-size: 0.875rem; }
+        .file-size { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+        
+        .remove-file {
+            background: rgba(239,68,68,0.1); border: none;
+            color: var(--error); cursor: pointer;
+            padding: 0.5rem; border-radius: 0.5rem; font-size: 1.25rem;
+        }
+        
+        .alert {
+            padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;
+            display: none; font-size: 0.875rem;
+        }
+        
+        .alert.show { display: block; }
+        .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; }
+        .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6EE7B7; }
+        
+        .submit-btn {
+            width: 100%; padding: 1rem;
+            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
+            color: white; border: none; border-radius: 0.75rem;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; display: flex; align-items: center;
+            justify-content: center; gap: 0.5rem;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107,33,168,0.3);
+        }
+        
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .spinner {
+            width: 20px; height: 20px;
+            border: 2px solid transparent; border-top-color: white;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .field-error {
+            color: var(--error); font-size: 0.875rem; margin-top: 0.25rem;
+        }
+        
+        footer {
+            text-align: center; padding: 2rem;
+            color: rgba(255,255,255,0.5); font-size: 0.875rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .contact-links {
+            display: flex; justify-content: center; gap: 1.5rem;
+            margin-top: 1rem; flex-wrap: wrap;
+        }
+        
+        .contact-links a {
+            color: var(--maseer-gold); text-decoration: none;
+        }
+        
+        .contact-links a:hover { text-decoration: underline; }
+        
+        @media (max-width: 640px) {
+            .logo { font-size: 2rem; }
+            .campaigns-grid { grid-template-columns: 1fr; }
+            .color-group { grid-template-columns: 1fr; }
+            .form-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="consciousness-bg"></div>
+    
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" data-lang="fa" onclick="setLanguage('fa')">دری</button>
+        <button class="lang-btn" data-lang="ps" onclick="setLanguage('ps')">پښتو</button>
+    </div>
+    
+    <header class="hero">
+        <h1 class="logo">Maseer Media</h1>
+        <p class="tagline" data-i18n="tagline">
+            Premium AI video marketing for Afghan brands.<br>
+            4 daily campaigns. 1224×1536 Meta-optimized.
+        </p>
+        <div class="meta-badge">✨ Sample Ready in 3 Minutes</div>
+    </header>
+    
+    <section class="campaigns-preview">
+        <h2 class="section-title" data-i18n="campaignTitle">Your Daily Campaign Schedule</h2>
+        <div class="campaigns-grid">
+            <div class="campaign-card">
+                <div class="campaign-time">6:00 AM</div>
+                <span class="campaign-lang">FA</span>
+                <h3 class="campaign-title" data-i18n="morningTitle">Morning Motivation</h3>
+                <p class="campaign-desc" data-i18n="morningDesc">Celestial Minimalism with Nastaʿlīq calligraphy. Navy-to-gold gradients.</p>
+            </div>
+            <div class="campaign-card">
+                <div class="campaign-time">12:00 PM</div>
+                <span class="campaign-lang">PS</span>
+                <h3 class="campaign-title" data-i18n="middayTitle">General Information</h3>
+                <p class="campaign-desc" data-i18n="middayDesc">Organic "Hujra" aesthetic with hand-drawn textures. Warm earthy tones.</p>
+            </div>
+            <div class="campaign-card">
+                <div class="campaign-time">6:00 PM</div>
+                <span class="campaign-lang">FA</span>
+                <h3 class="campaign-title" data-i18n="eveningTitle">Service Promotion</h3>
+                <p class="campaign-desc" data-i18n="eveningDesc">Modern Classic with high-res photography. Detail callouts.</p>
+            </div>
+            <div class="campaign-card">
+                <div class="campaign-time">12:00 AM</div>
+                <span class="campaign-lang">EN</span>
+                <h3 class="campaign-title" data-i18n="nightTitle">Brand Awareness</h3>
+                <p class="campaign-desc" data-i18n="nightDesc">Tactile Stop-Motion with handcrafted assembly. 12fps stutter.</p>
+            </div>
+        </div>
+    </section>
+    
+    <div class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h2 data-i18n="formTitle">Create Your Campaign</h2>
+                <p data-i18n="formSubtitle">Fill in your brand details to generate your free sample</p>
+            </div>
+            
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-success" id="successAlert"></div>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="brandName" class="required">Brand Name (English)</label>
+                    <input type="text" id="brandName" required placeholder="e.g., Zarrin Jewelry">
+                </div>
+                
+                <div class="form-group">
+                    <label for="localName">Brand Name (Dari/Pashto)</label>
+                    <input type="text" id="localName" dir="rtl" placeholder="مثلاً: زرین جواهرات">
+                </div>
+                
+                <div class="form-group">
+                    <label for="industry" class="required">Industry</label>
+                    <select id="industry" required>
+                        <option value="">Select industry...</option>
+                        <option value="Jewelry & Gold">Jewelry & Gold</option>
+                        <option value="Café & Restaurant">Café & Restaurant</option>
+                        <option value="Fashion & Clothing">Fashion & Clothing</option>
+                        <option value="Technology & IT">Technology & IT</option>
+                        <option value="Healthcare & Medical">Healthcare & Medical</option>
+                        <option value="Education & Training">Education & Training</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Automotive">Automotive</option>
+                        <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
+                        <option value="Construction & Materials">Construction & Materials</option>
+                        <option value="Consultancy & Services">Consultancy & Services</option>
+                        <option value="Retail & Shopping">Retail & Shopping</option>
+                        <option value="Travel & Hospitality">Travel & Hospitality</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Handicrafts">Handicrafts</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="facebookPage" class="required">Facebook Page URL</label>
+                    <input type="url" id="facebookPage" required placeholder="https://facebook.com/yourpage">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">WhatsApp Number</label>
+                    <input type="tel" id="contact" placeholder="+93 70 123 4567">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Brand Colors</label>
+                    <div class="color-group">
+                        <div>
+                            <input type="text" id="primaryColor" value="#6B21A8" placeholder="Primary #6B21A8">
+                            <input type="color" id="primaryColorPicker" value="#6B21A8">
+                        </div>
+                        <div>
+                            <input type="text" id="secondaryColor" value="#EAB308" placeholder="Secondary #EAB308">
+                            <input type="color" id="secondaryColorPicker" value="#EAB308">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="targetAudience">Target Audience</label>
+                    <input type="text" id="targetAudience" placeholder="e.g., Women 25-45 in Kabul">
+                </div>
+                
+                <div class="form-group">
+                    <label for="keyOfferings">Key Products/Services</label>
+                    <input type="text" id="keyOfferings" placeholder="What makes your brand special?">
+                </div>
+                
+                <div class="form-group">
+                    <label>Brand Logo</label>
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Drop logo or click to browse</div>
+                        <div class="upload-hint">PNG with transparency preferred (max 2MB)</div>
+                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="file-preview" id="filePreview">
+                        <img id="previewImg" src="" alt="Logo">
+                        <div class="file-info">
+                            <div class="file-name" id="fileName"></div>
+                            <div class="file-size" id="fileSize"></div>
+                        </div>
+                        <button type="button" class="remove-file" onclick="App.removeFile()">×</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Generate My Sample Video
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2026 Maseer Media Inc. | Kabul, Afghanistan</p>
+        <div class="contact-links">
+            <a href="mailto:maseer.ac.ap@gmail.com">Email</a>
+            <a href="https://wa.me/93793535228">WhatsApp</a>
+            <a href="https://github.com/maseeracap-dev">GitHub</a>
+        </div>
+    </footer>
+    
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
