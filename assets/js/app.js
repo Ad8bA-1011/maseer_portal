@@ -1,16 +1,11 @@
+/**
+ * Maseer Portal - Production Ready
+ */
+
 const CONFIG = {
-    BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
+    BACKEND_REPO: 'ad8ba-1011/maseer_automation',
     MAX_LOGO_SIZE: 2 * 1024 * 1024,
     SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp']
-};
-
-// Get token from injected config (only exists in production build)
-const getToken = () => {
-    if (typeof window.GITHUB_CONFIG !== 'undefined') {
-        return window.GITHUB_CONFIG.token;
-    }
-    // Development fallback - shows error
-    return null;
 };
 
 const App = (function() {
@@ -23,10 +18,16 @@ const App = (function() {
         setupEventListeners();
         setupValidation();
         
-        // Check if running locally (no token)
-        if (!getToken()) {
-            console.log('Development mode: GitHub token not available');
+        // Log mode for debugging
+        if (typeof window.GITHUB_CONFIG === 'undefined') {
+            console.log('📧 Development mode: Will use email fallback');
+        } else {
+            console.log('✅ Production mode: GitHub API ready');
         }
+    }
+    
+    function getToken() {
+        return (typeof window.GITHUB_CONFIG !== 'undefined') ? window.GITHUB_CONFIG.token : null;
     }
     
     function setupEventListeners() {
@@ -35,6 +36,7 @@ const App = (function() {
             form.addEventListener('submit', handleSubmit);
         }
         
+        // File upload
         const logoInput = document.getElementById('logoInput');
         const uploadZone = document.getElementById('uploadZone');
         
@@ -60,7 +62,7 @@ const App = (function() {
             });
         }
         
-        // Color picker sync
+        // Color pickers
         const primaryInput = document.getElementById('primaryColor');
         const primaryPicker = document.getElementById('primaryColorPicker');
         if (primaryInput && primaryPicker) {
@@ -85,7 +87,11 @@ const App = (function() {
             return false;
         }
         if (field.id === 'primaryColor' && !/^#[0-9A-F]{6}$/i.test(value)) {
-            showFieldError(field, 'Invalid hex color');
+            showFieldError(field, 'Invalid hex color (e.g., #6B21A8)');
+            return false;
+        }
+        if (field.id === 'facebookPage' && !value.startsWith('http')) {
+            showFieldError(field, 'Please enter a valid URL starting with http');
             return false;
         }
         clearError(field);
@@ -152,6 +158,7 @@ const App = (function() {
         e.preventDefault();
         if (isSubmitting) return;
         
+        // Validate
         const required = ['brandName', 'industry', 'primaryColor', 'facebookPage'];
         let valid = true;
         required.forEach(id => {
@@ -164,8 +171,9 @@ const App = (function() {
         }
         
         const token = getToken();
+        
+        // Development mode - use email
         if (!token) {
-            // Development mode - use email fallback
             const data = await gatherFormData();
             const emailBody = `New Maseer Registration
 
@@ -179,15 +187,19 @@ Contact: ${data.contact_info}
 Target: ${data.target_audience}
 Offerings: ${data.key_offerings}
 
-JSON:
+JSON Data:
 ${JSON.stringify(data, null, 2)}`;
 
-            window.location.href = `mailto:maseer.ac.ap@gmail.com?subject=New Registration: ${data.brand_name}&body=${encodeURIComponent(emailBody)}`;
-            sessionStorage.setItem('maseer_registration', JSON.stringify({ brand_name: data.brand_name }));
+            window.location.href = `mailto:adeeb.yousofi12@gmail.com?subject=New Registration: ${encodeURIComponent(data.brand_name)}&body=${encodeURIComponent(emailBody)}`;
+            sessionStorage.setItem('maseer_registration', JSON.stringify({ 
+                brand_name: data.brand_name,
+                method: 'email'
+            }));
             window.location.href = 'success.html';
             return;
         }
         
+        // Production mode - use GitHub API
         isSubmitting = true;
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
@@ -200,15 +212,16 @@ ${JSON.stringify(data, null, 2)}`;
             if (result.success) {
                 sessionStorage.setItem('maseer_registration', JSON.stringify({
                     brand_name: data.brand_name,
-                    issue_number: result.issue_number
+                    issue_number: result.issue_number,
+                    issue_url: result.issue_url
                 }));
                 window.location.href = 'success.html';
             } else {
                 throw new Error(result.error);
             }
         } catch (error) {
-            console.error(error);
-            showToast(error.message, 'error');
+            console.error('Submission error:', error);
+            showToast(error.message || 'Submission failed. Try email fallback.', 'error');
             isSubmitting = false;
             btn.disabled = false;
             btn.innerHTML = 'Generate My Sample Video';
@@ -240,6 +253,7 @@ ${JSON.stringify(data, null, 2)}`;
         const issueBody = `## New Registration: ${data.brand_name}
 
 **Submitted:** ${new Date().toISOString()}
+**Status:** Pending Processing
 
 ### Brand Information
 | Field | Value |
@@ -247,7 +261,7 @@ ${JSON.stringify(data, null, 2)}`;
 | **Brand Name** | ${data.brand_name} |
 | **Local Name** | ${data.local_name || 'N/A'} |
 | **Industry** | ${data.industry} |
-| **Facebook** | ${data.facebook_page} |
+| **Facebook Page** | ${data.facebook_page} |
 
 ### Visual Identity
 | Field | Value |
@@ -260,39 +274,58 @@ ${JSON.stringify(data, null, 2)}`;
 |-------|-------|
 | **Target Audience** | ${data.target_audience || 'N/A'} |
 | **Key Offerings** | ${data.key_offerings || 'N/A'} |
-| **Contact** | ${data.contact_info || 'N/A'} |
+| **Contact/WhatsApp** | ${data.contact_info || 'N/A'} |
 
 ### Raw Data
 \`\`\`json
 ${JSON.stringify(data, null, 2)}
-\`\`\``;
+\`\`\`
 
-        const response = await fetch(`https://api.github.com/repos/${CONFIG.BACKEND_REPO}/issues`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                title: `New Registration: ${data.brand_name}`,
-                body: issueBody,
-                labels: ['new-client', 'pending']
-            })
-        });
-        
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.message || `GitHub error: ${response.status}`);
+---
+*Automated registration from Maseer Portal*`;
+
+        try {
+            const response = await fetch(`https://api.github.com/repos/${CONFIG.BACKEND_REPO}/issues`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: `New Registration: ${data.brand_name}`,
+                    body: issueBody,
+                    labels: ['new-client', 'pending']
+                })
+            });
+            
+            // Handle 401/403 - token issue
+            if (response.status === 401) {
+                throw new Error('Authentication failed. Please contact support.');
+            }
+            if (response.status === 403) {
+                throw new Error('API rate limit exceeded. Please try again later or use WhatsApp.');
+            }
+            
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.message || `GitHub error: ${response.status}`);
+            }
+            
+            const issueData = await response.json();
+            
+            return {
+                success: true,
+                issue_number: issueData.number,
+                issue_url: issueData.html_url
+            };
+            
+        } catch (error) {
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error('Network error. Please check your connection or use WhatsApp: +93 79 353 5228');
+            }
+            throw error;
         }
-        
-        const issueData = await response.json();
-        
-        return {
-            success: true,
-            issue_number: issueData.number,
-            issue_url: issueData.html_url
-        };
     }
     
     function fileToBase64(file) {
@@ -313,6 +346,7 @@ ${JSON.stringify(data, null, 2)}
         toast.textContent = message;
         toast.className = `alert alert-${type} show`;
         toast.style.display = 'block';
+        
         setTimeout(() => {
             toast.style.display = 'none';
         }, 5000);
