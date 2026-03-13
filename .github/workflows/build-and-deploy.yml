@@ -1,42 +1,31 @@
-name: Build and Deploy Site
+name: Deploy to Pages
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Inject Secrets
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      - uses: actions/checkout@v4
+      
+      - name: Inject token into index.html
         run: |
-          # Create config file with token (will be embedded in build)
-          echo "window.GITHUB_CONFIG = { token: '${PAT_TOKEN}' };" > assets/js/config.js
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          sed -i 's|<head>|<head>\n  <script>window.GITHUB_CONFIG = { token: "${{ secrets.PAT_TOKEN }}" };</script>|' index.html
+          head -20 index.html
+      
+      - uses: actions/configure-pages@v4
+      
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
+          path: .
+      
+      - uses: actions/deploy-pages@v4
         id: deployment
-        uses: actions/deploy-pages@v4
