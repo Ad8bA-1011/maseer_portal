@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success - Maseer Media</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --maseer-purple: #6B21A8;
+            --maseer-gold: #EAB308;
+            --maseer-dark: #0A0A0F;
+            --success: #10B981;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', 'Noto Naskh Arabic', sans-serif;
+            background: var(--maseer-dark);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .success-card {
+            background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(18,18,26,0.98));
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .checkmark {
+            width: 80px; height: 80px;
+            background: rgba(16,185,129,0.1);
+            border: 3px solid var(--success);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(16,185,129,0); }
+        }
+        
+        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .brand-name { color: var(--maseer-gold); font-weight: 800; }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .specs-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .spec-item { text-align: center; }
+        .spec-value { font-size: 1.5rem; font-weight: 700; color: var(--maseer-gold); }
+        .spec-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+        
+        .next-steps {
+            background: rgba(16,185,129,0.05);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        
+        .next-steps h3 {
+            color: var(--success);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .next-steps ol {
+            padding-left: 1.25rem;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.875rem;
+            line-height: 1.8;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
+            color: white;
+            text-decoration: none;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .btn:hover { transform: translateY(-2px); }
+        
+        .contact-info {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .contact-info a { color: var(--maseer-gold); text-decoration: none; }
+        
+        @media (max-width: 480px) {
+            .success-card { padding: 2rem 1.5rem; }
+            .specs-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <div class="checkmark">✓</div>
+        
+        <h1>Welcome, <span class="brand-name" id="brandName">Your Brand</span>!</h1>
+        
+        <p class="subtitle">
+            Your registration is complete. We're generating your AI marketing video now.
+        </p>
+        
+        <div class="specs-box">
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-value">1224</div>
+                    <div class="spec-label">Width (px)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">1536</div>
+                    <div class="spec-label">Height (px)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">4:5</div>
+                    <div class="spec-label">Aspect</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="next-steps">
+            <h3>📱 What happens next?</h3>
+            <ol>
+                <li>Our AI generates your sample video (3-5 minutes)</li>
+                <li>Video is sent to your WhatsApp/Telegram</li>
+                <li>Review and reply <strong>SUBSCRIBE</strong> for daily videos</li>
+            </ol>
+        </div>
+        
+        <a href="index.html" class="btn">Register Another Brand →</a>
+        
+        <div class="contact-info">
+            Questions? Contact us:<br>
+            <a href="mailto:maseer.ac.ap@gmail.com">maseer.ac.ap@gmail.com</a> | 
+            <a href="https://wa.me/93793535228">WhatsApp</a>
+        </div>
+    </div>
+
+    <script>
+        const data = JSON.parse(sessionStorage.getItem('maseer_registration') || '{}');
+        document.getElementById('brandName').textContent = data.brand_name || 'Your Brand';
+    </script>
+</body>
+</html>
