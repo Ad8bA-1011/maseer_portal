@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://github.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     
-    <title>Upload Logo - Maseer Media</title>
+    <title>Complete Registration - Maseer Media</title>
     <meta name="description" content="Complete your registration by uploading your brand logo.">
     
     <style>
@@ -22,11 +22,7 @@
             --light: #F8FAFC;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
@@ -66,16 +62,8 @@
             color: #94a3b8;
         }
         
-        .step.active {
-            background: var(--success);
-            color: white;
-        }
-        
-        .step.current {
-            background: var(--primary);
-            color: white;
-            animation: pulse 2s infinite;
-        }
+        .step.active { background: var(--success); color: white; }
+        .step.current { background: var(--primary); color: white; animation: pulse 2s infinite; }
         
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(107, 33, 168, 0.4); }
@@ -86,17 +74,6 @@
             text-align: center;
             margin-bottom: 1rem;
             color: var(--secondary);
-        }
-        
-        .brand-name {
-            text-align: center;
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(107, 33, 168, 0.2);
-            border-radius: 0.5rem;
-            border: 1px solid var(--primary);
         }
         
         .instructions {
@@ -117,47 +94,8 @@
             color: #cbd5e1;
         }
         
-        .instructions li {
-            margin: 0.75rem 0;
-            line-height: 1.5;
-        }
-        
-        .instructions strong {
-            color: var(--light);
-        }
-        
-        .logo-preview {
-            text-align: center;
-            margin: 2rem 0;
-            padding: 2rem;
-            border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 0.5rem;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo-preview.has-image {
-            border-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
-        }
-        
-        #logo-preview-img {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 0.5rem;
-            display: none;
-        }
-        
-        #logo-preview-img.visible {
-            display: block;
-        }
-        
-        .placeholder-text {
-            color: #64748b;
-        }
+        .instructions li { margin: 0.75rem 0; line-height: 1.5; }
+        .instructions strong { color: var(--light); }
         
         .btn {
             display: inline-flex;
@@ -178,40 +116,9 @@
             margin: 0.5rem 0;
         }
         
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(107, 33, 168, 0.3);
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .btn-success {
-            background: var(--success);
-        }
-        
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(107, 33, 168, 0.3); }
+        .btn-secondary { background: rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
         
         .github-link {
             display: block;
@@ -223,19 +130,9 @@
             color: #94a3b8;
             text-decoration: none;
             border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s;
         }
         
-        .github-link:hover {
-            border-color: var(--primary);
-            color: var(--light);
-        }
-        
-        .github-link strong {
-            color: var(--primary);
-            display: block;
-            margin-bottom: 0.25rem;
-        }
+        .github-link:hover { border-color: var(--primary); color: var(--light); }
         
         .error-message {
             color: var(--error);
@@ -247,21 +144,26 @@
             display: none;
         }
         
-        .error-message.visible {
-            display: block;
+        .error-message.visible { display: block; }
+        
+        .recovery-form {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.5rem;
+            display: none;
         }
         
-        .skip-section {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
+        .recovery-form.visible { display: block; }
         
-        .skip-section p {
-            color: #64748b;
-            font-size: 0.9rem;
+        .recovery-form input {
+            width: 100%;
+            padding: 0.75rem;
             margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0.4rem;
+            background: rgba(0,0,0,0.3);
+            color: white;
         }
         
         footer {
@@ -272,186 +174,137 @@
             color: #64748b;
             font-size: 0.875rem;
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 1.5rem;
-            }
-            
-            .step-indicator {
-                gap: 0.5rem;
-            }
-            
-            .step {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Step Indicator -->
         <div class="step-indicator">
             <div class="step active">1</div>
             <div class="step current">2</div>
             <div class="step">3</div>
         </div>
         
-        <h1>📎 Upload Your Logo</h1>
-        
-        <div class="brand-name" id="brand-display">
-            Loading...
-        </div>
+        <h1>📎 Complete Your Registration</h1>
         
         <div class="instructions">
-            <h3>How to complete your registration:</h3>
+            <h3>Almost done! Follow these steps:</h3>
             <ol>
-                <li>Click the <strong>"Open GitHub Issue"</strong> button below</li>
-                <li>Your registration form has been pre-filled</li>
-                <li>Click <strong>"Create"</strong> to submit the issue</li>
+                <li>Click <strong>"Open GitHub Issue"</strong> below</li>
+                <li>Your registration is pre-filled—just click <strong>"Create"</strong></li>
                 <li><strong>Reply to your issue</strong> with logo attached (drag & drop)</li>
-                <li>Your sample video will generate automatically in 3-5 minutes</li>
+                <li>Your sample video generates in 3-5 minutes!</li>
             </ol>
         </div>
         
-        <!-- Logo Preview (if selected in previous step) -->
-        <div class="logo-preview" id="logo-preview">
-            <img id="logo-preview-img" alt="Logo preview">
-            <p class="placeholder-text" id="placeholder-text">
-                No logo selected in previous step<br>
-                You can upload directly on GitHub
-            </p>
-        </div>
-        
-        <!-- Error Display -->
         <div class="error-message" id="error-display"></div>
         
-        <!-- Primary Action -->
-        <a href="#" class="btn" id="github-link" target="_blank">
+        <!-- Recovery form if session data lost -->
+        <div class="recovery-form" id="recovery-form">
+            <p style="margin-bottom: 1rem; color: #94a3b8;">Enter your brand name to recover your registration:</p>
+            <input type="text" id="recovery-brand" placeholder="Your brand name" maxlength="50">
+            <button class="btn" onclick="recoverRegistration()">Recover Registration</button>
+        </div>
+        
+        <a href="#" class="btn" id="github-link" target="_blank" rel="noopener noreferrer">
             <span>🚀 Open GitHub Issue</span>
         </a>
         
-        <!-- Copy Instructions -->
         <button class="btn btn-secondary" id="copy-btn" type="button">
-            📋 Copy Logo Upload Instructions
+            📋 Copy Logo Instructions
         </button>
         
-        <!-- Skip Option -->
-        <div class="skip-section">
-            <p>Don't have a logo ready?</p>
-            <a href="success.html?nologo=1" class="btn btn-secondary">
-                Skip for Now →
-            </a>
-        </div>
+        <a href="success.html?status=pending" class="btn btn-secondary">
+            I'll Upload Logo Later →
+        </a>
         
         <footer>
-            <p>Your sample video will be ready in 3-5 minutes after logo upload</p>
+            <p>Sample video arrives in 3-5 minutes after logo upload</p>
             <p style="margin-top: 0.5rem;">
-                <a href="https://github.com/Ad8bA-1011/maseer_automation" style="color: var(--primary);">View Backend</a> • 
+                <a href="https://github.com/Ad8bA-1011/maseer_automation" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">View Backend</a> • 
                 <a href="mailto:adeeb.yousofi12@gmail.com" style="color: var(--primary);">Need Help?</a>
             </p>
         </footer>
     </div>
 
     <script>
-        // Configuration
         const CONFIG = {
             BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
             FALLBACK_TITLE: 'New Registration: Unknown Brand'
         };
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Retrieve stored data
-            const brandName = sessionStorage.getItem('maseer_pending_brand');
-            const logoData = sessionStorage.getItem('maseer_pending_logo');
-            const logoFilename = sessionStorage.getItem('maseer_logo_filename');
+            // Try to get brand from URL params first (more reliable than sessionStorage)
+            const urlParams = new URLSearchParams(window.location.search);
+            let brandName = urlParams.get('brand');
+            let sampleRequested = urlParams.get('sample') === 'true';
             
-            // Validate we have the required data
+            // Fallback to sessionStorage
             if (!brandName) {
-                showError('Registration data not found. Please start over from the registration form.');
+                brandName = sessionStorage.getItem('maseer_pending_brand');
+                sampleRequested = sessionStorage.getItem('maseer_sample_requested') === 'true';
+            }
+            
+            // Validate brand name
+            if (!brandName || !/^[\w\s\-]{2,50}$/.test(brandName)) {
+                showError('Registration data not found or invalid. Please recover your registration.');
+                document.getElementById('recovery-form').classList.add('visible');
                 document.getElementById('github-link').style.display = 'none';
                 return;
             }
             
-            // Display brand name
-            document.getElementById('brand-display').textContent = brandName;
-            
-            // Show logo preview if available
-            if (logoData) {
-                const previewImg = document.getElementById('logo-preview-img');
-                const placeholder = document.getElementById('placeholder-text');
-                const previewContainer = document.getElementById('logo-preview');
-                
-                previewImg.src = logoData;
-                previewImg.classList.add('visible');
-                placeholder.innerHTML = `<strong>✓ Logo ready:</strong> ${escapeHtml(logoFilename || 'logo.png')}<br>
-                    <small>This will be uploaded to your GitHub issue</small>`;
-                previewContainer.classList.add('has-image');
-            }
-            
             // Build GitHub link
             const title = encodeURIComponent(`New Registration: ${brandName}`);
-            const body = buildIssueBody(brandName, !!logoData);
+            const body = buildIssueBody(brandName, sampleRequested);
             const labels = encodeURIComponent('new-client,portal-registration');
             
             const githubUrl = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${encodeURIComponent(body)}&labels=${labels}`;
             
             // Check URL length
-            if (githubUrl.length > 8000) {
-                showError('Form data is too large. Please go back and reduce text in description fields.');
+            if (githubUrl.length > 7000) {
+                showError('Registration data too long. Please use a shorter brand name.');
                 return;
             }
             
             document.getElementById('github-link').href = githubUrl;
             
-            // Copy button functionality
+            // Copy button
             document.getElementById('copy-btn').addEventListener('click', () => {
                 const instructions = generateUploadInstructions(brandName);
                 navigator.clipboard.writeText(instructions).then(() => {
                     const btn = document.getElementById('copy-btn');
-                    const originalText = btn.innerHTML;
                     btn.innerHTML = '✅ Copied!';
-                    btn.classList.add('btn-success');
                     setTimeout(() => {
-                        btn.innerHTML = originalText;
-                        btn.classList.remove('btn-success');
+                        btn.innerHTML = '📋 Copy Logo Instructions';
                     }, 2000);
-                }).catch(() => {
-                    alert('Could not copy automatically. Please copy manually.');
                 });
             });
             
-            // Clear session storage after 10 minutes (safety cleanup)
+            // Clear session storage after successful display
             setTimeout(() => {
-                sessionStorage.removeItem('maseer_pending_logo');
                 sessionStorage.removeItem('maseer_pending_brand');
-                sessionStorage.removeItem('maseer_logo_filename');
-            }, 10 * 60 * 1000);
+                sessionStorage.removeItem('maseer_sample_requested');
+            }, 5000);
         });
         
-        function buildIssueBody(brandName, hasLogo) {
+        function buildIssueBody(brandName, sampleRequested) {
             const payload = {
                 brand_name: brandName,
+                request_sample: sampleRequested,
                 submitted_at: new Date().toISOString(),
-                source: 'maseer_portal',
-                has_logo_pending: hasLogo
+                source: 'maseer_portal_upload_step'
             };
             
-            let body = `## 🎯 New Registration via Maseer Portal
+            return `## 🎯 New Registration via Maseer Portal
 
 **Brand:** ${brandName}
+**Sample Requested:** ${sampleRequested ? 'Yes' : 'No'}
 **Submitted:** ${payload.submitted_at}
 
 ### Registration Data
-\\`\\`\\`json
+\`\`\`json
 ${JSON.stringify(payload, null, 2)}
-\\`\\`\\`
-`;
-            
-            if (hasLogo) {
-                body += `
+\`\`\`
+
 ---
 
 ### 📎 Logo Upload Required
@@ -460,7 +313,7 @@ ${JSON.stringify(payload, null, 2)}
 
 **Instructions:**
 1. Click "Comment" below this issue
-2. Drag and drop your logo file into the comment box, OR click the paperclip icon to upload
+2. Drag and drop your logo file into the comment box, OR click the paperclip icon
 3. Wait for upload to complete (you'll see the filename)
 4. Click "Comment" to post
 
@@ -473,27 +326,11 @@ Once your logo is uploaded, our system will automatically:
 1. Detect the attachment
 2. Generate your sample video (3-5 minutes)
 3. Send it to your WhatsApp/Telegram
-`;
-            } else {
-                body += `
----
-
-### 📎 Logo Upload (Optional)
-
-To include your brand logo in videos, please reply to this issue with your logo attached.
-
-If you don't have a logo ready, we can generate videos with text-only branding for now.
-`;
-            }
-            
-            body += `
 
 ---
 
 *Registered via [Maseer Portal](https://Ad8bA-1011.github.io/maseer_portal/)*
 *Questions? Contact: adeeb.yousofi12@gmail.com*`;
-            
-            return body;
         }
         
         function generateUploadInstructions(brandName) {
@@ -510,16 +347,21 @@ Your sample video will be generated automatically in 3-5 minutes!
 Supported formats: PNG, JPG, SVG (max 2MB)`;
         }
         
+        function recoverRegistration() {
+            const brand = document.getElementById('recovery-brand').value.trim();
+            if (!brand || !/^[\w\s\-]{2,50}$/.test(brand)) {
+                alert('Please enter a valid brand name (letters, numbers, spaces, hyphens only)');
+                return;
+            }
+            
+            // Redirect with brand in URL
+            window.location.href = `upload-logo.html?brand=${encodeURIComponent(brand)}&sample=true`;
+        }
+        
         function showError(message) {
             const errorEl = document.getElementById('error-display');
             errorEl.textContent = message;
             errorEl.classList.add('visible');
-        }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
     </script>
 </body>
