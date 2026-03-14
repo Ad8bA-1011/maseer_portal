@@ -1,353 +1,432 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maseer Media | AI Video Marketing for Afghan Brands</title>
-    <meta name="description" content="Professional AI-powered video marketing. 4 daily campaigns optimized for Meta platforms.">
     
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>Maseer Media - AI Video Marketing for Afghan Businesses</title>
+    <meta name="description" content="Automated AI video marketing for Afghan brands. 4 professional videos daily, optimized for Instagram and Facebook. 1224×1536 Meta-optimized format.">
+    <meta name="keywords" content="AI video marketing, Afghan business, Instagram marketing, Facebook ads, Dari, Pashto, Kabul">
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --maseer-purple: #6B21A8;
-            --maseer-gold: #EAB308;
-            --maseer-dark: #0A0A0F;
+            --primary: #6B21A8;
+            --secondary: #EAB308;
+            --dark: #0F172A;
+            --light: #F8FAFC;
             --success: #10B981;
             --error: #EF4444;
+            --warning: #F59E0B;
         }
         
-        [dir="rtl"] { font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Inter', sans-serif; }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html { scroll-behavior: smooth; font-size: 16px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            font-family: 'Inter', 'Noto Naskh Arabic', sans-serif;
-            background: var(--maseer-dark);
-            color: #ffffff;
-            line-height: 1.6;
+            font-family: 'Noto Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+            color: var(--light);
             min-height: 100vh;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
         
-        .consciousness-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background: linear-gradient(-45deg, var(--maseer-dark), #4c1d95, var(--maseer-purple), var(--maseer-dark));
-            background-size: 400% 400%; animation: gradient 15s ease infinite; opacity: 0.15;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
         
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .lang-switcher {
-            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100;
-            display: flex; gap: 0.5rem; background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(20px); padding: 0.5rem; border-radius: 1rem;
-        }
-        
-        .lang-btn {
-            padding: 0.5rem 1rem; background: transparent; border: none;
-            color: rgba(255,255,255,0.6); font-weight: 600; cursor: pointer;
-            border-radius: 0.75rem; transition: all 0.3s;
-        }
-        
-        .lang-btn.active {
-            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
-            color: white;
-        }
-        
-        .hero {
-            padding: 5rem 1.5rem 3rem; text-align: center; position: relative;
+        header {
+            text-align: center;
+            padding: 3rem 0;
         }
         
         .logo {
-            font-size: 3rem; font-weight: 800;
-            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
         }
         
         .tagline {
-            color: rgba(255,255,255,0.7); font-size: 1.125rem;
-            max-width: 600px; margin: 0 auto 2rem;
+            color: #94a3b8;
+            font-size: 1.1rem;
         }
         
-        .meta-badge {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: rgba(107, 33, 168, 0.2); border: 1px solid rgba(107, 33, 168, 0.4);
-            padding: 0.75rem 1.5rem; border-radius: 9999px;
-            color: var(--maseer-gold); font-weight: 500;
-        }
-        
-        .campaigns-preview {
-            max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;
-        }
-        
-        .section-title {
-            text-align: center; font-size: 1.5rem; margin-bottom: 2rem;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        .campaigns-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .campaign-card {
-            background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.95));
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem;
-            padding: 1.5rem; transition: all 0.3s;
-        }
-        
-        .campaign-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--maseer-purple);
-        }
-        
-        .campaign-time { font-size: 1.75rem; font-weight: 800; color: var(--maseer-gold); }
-        .campaign-lang {
-            display: inline-block; background: rgba(255,255,255,0.1);
-            padding: 0.25rem 0.75rem; border-radius: 9999px;
-            font-size: 0.75rem; margin: 0.5rem 0; text-transform: uppercase;
-        }
-        .campaign-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .campaign-desc { font-size: 0.875rem; color: rgba(255,255,255,0.6); }
-        
-        .form-container {
-            max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
-        }
-        
-        .form-card {
-            background: linear-gradient(145deg, rgba(26,26,46,0.9), rgba(18,18,26,0.95));
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem;
+        .hero {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
             padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
         }
         
-        .form-header {
-            text-align: center; margin-bottom: 2rem;
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
         }
         
-        .form-header h2 {
-            font-size: 1.75rem; margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #fff, var(--maseer-gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
         }
         
-        .form-header p { color: rgba(255,255,255,0.6); }
+        .feature {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
         
-        .form-group { margin-bottom: 1.5rem; }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-section {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .form-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
         
         label {
-            display: block; font-weight: 500; margin-bottom: 0.5rem;
-            color: rgba(255,255,255,0.9);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #cbd5e1;
         }
         
-        .required::after { content: " *"; color: var(--error); }
-        
-        input, select {
-            width: 100%; padding: 0.875rem 1rem;
-            background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 0.75rem; color: white; font-size: 1rem;
-            transition: all 0.3s;
+        .required::after {
+            content: " *";
+            color: var(--error);
         }
         
-        input:focus, select:focus {
-            outline: none; border-color: var(--maseer-purple);
-            background: rgba(0,0,0,0.5);
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="color"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            color: var(--light);
+            font-size: 1rem;
+            transition: border-color 0.2s;
         }
         
-        .color-group {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        input::placeholder,
+        textarea::placeholder {
+            color: #64748b;
+        }
+        
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
         input[type="color"] {
-            width: 100%; height: 40px; padding: 0; border: none;
-            border-radius: 0.5rem; cursor: pointer; margin-top: 0.5rem;
+            width: 60px;
+            height: 40px;
+            padding: 0;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
         }
         
-        .upload-zone {
-            border: 2px dashed rgba(255,255,255,0.2); border-radius: 1rem;
-            padding: 2rem; text-align: center; cursor: pointer;
-            transition: all 0.3s; background: rgba(0,0,0,0.2);
+        .color-value {
+            font-family: monospace;
+            color: #94a3b8;
         }
         
-        .upload-zone:hover, .upload-zone.drag-active {
-            border-color: var(--maseer-purple); background: rgba(107,33,168,0.05);
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
         }
         
-        .upload-zone.has-file {
-            border-color: var(--success); background: rgba(16,185,129,0.05);
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
         }
         
-        .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .upload-text { font-weight: 500; margin-bottom: 0.25rem; }
-        .upload-hint { font-size: 0.875rem; color: rgba(255,255,255,0.5); }
-        
-        .file-preview {
-            display: none; align-items: center; gap: 1rem;
-            margin-top: 1rem; padding: 1rem;
-            background: rgba(16,185,129,0.08); border-radius: 0.75rem;
+        .file-input-label {
+            display: block;
+            padding: 0.75rem;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #94a3b8;
         }
         
-        .file-preview.show { display: flex; }
-        
-        .file-preview img {
-            width: 48px; height: 48px; object-fit: contain;
-            background: white; border-radius: 0.5rem; padding: 0.25rem;
+        .file-input-label:hover {
+            border-color: var(--primary);
+            background: rgba(107, 33, 168, 0.1);
         }
         
-        .file-info { flex: 1; text-align: left; }
-        .file-name { font-weight: 600; font-size: 0.875rem; }
-        .file-size { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
-        
-        .remove-file {
-            background: rgba(239,68,68,0.1); border: none;
-            color: var(--error); cursor: pointer;
-            padding: 0.5rem; border-radius: 0.5rem; font-size: 1.25rem;
+        .file-selected {
+            border-color: var(--success) !important;
+            color: var(--success) !important;
         }
         
-        .alert {
-            padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;
-            display: none; font-size: 0.875rem;
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
         
-        .alert.show { display: block; }
-        .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; }
-        .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6EE7B7; }
-        
-        .submit-btn {
-            width: 100%; padding: 1rem;
-            background: linear-gradient(135deg, var(--maseer-purple), var(--maseer-gold));
-            color:  white; border: none; border-radius: 0.75rem;
-            font-size: 1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s; display: flex; align-items: center;
-            justify-content: center; gap: 0.5rem;
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+            accent-color: var(--primary);
         }
         
-        .submit-btn:hover:not(:disabled) {
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button[type="submit"]:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(107,33,168,0.3);
+            box-shadow: 0 10px 30px rgba(107, 33, 168, 0.3);
         }
         
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        button[type="submit"]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         
         .spinner {
-            width: 20px; height: 20px;
-            border: 2px solid transparent; border-top-color: white;
-            border-radius: 50%; animation: spin 0.8s linear infinite;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 0.5rem;
+            vertical-align: middle;
         }
         
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         
-        .field-error {
-            color: var(--error); font-size: 0.875rem; margin-top: 0.25rem;
+        .error-message {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
+        
+        .input-error {
+            border-color: var(--error) !important;
+        }
+        
+        .schedule-info {
+            background: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .schedule-info h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
         }
         
         footer {
-            text-align: center; padding: 2rem;
-            color: rgba(255,255,255,0.5); font-size: 0.875rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.875rem;
         }
         
-        .contact-links {
-            display: flex; justify-content: center; gap: 1.5rem;
-            margin-top: 1rem; flex-wrap: wrap;
+        .language-switcher {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
         }
         
-        .contact-links a {
-            color: var(--maseer-gold); text-decoration: none;
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--light);
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .contact-links a:hover { text-decoration: underline; }
+        .lang-btn.active,
+        .lang-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
         
-        @media (max-width: 640px) {
+        .help-text {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+        
+        @media (max-width: 600px) {
             .logo { font-size: 2rem; }
-            .campaigns-grid { grid-template-columns: 1fr; }
-            .color-group { grid-template-columns: 1fr; }
-            .form-card { padding: 1.5rem; }
+            .hero h2 { font-size: 1.3rem; }
+            .features { grid-template-columns: 1fr; }
+            .schedule-grid { grid-template-columns: 1fr; }
+            .language-switcher { top: 0.5rem; right: 0.5rem; }
+            .lang-btn { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
         }
     </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="consciousness-bg"></div>
-    
-    <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" data-lang="fa" onclick="setLanguage('fa')">دری</button>
-        <button class="lang-btn" data-lang="ps" onclick="setLanguage('ps')">پښتو</button>
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="fa">FA</button>
+        <button class="lang-btn" data-lang="ps">PS</button>
     </div>
-    
-    <header class="hero">
-        <h1 class="logo">Maseer Media</h1>
-        <p class="tagline" data-i18n="tagline">
-            Premium AI video marketing for Afghan brands.<br>
-            4 daily campaigns. 1224×1536 Meta-optimized.
-        </p>
-        <div class="meta-badge">✨ Sample Ready in 3 Minutes</div>
-    </header>
-    
-    <section class="campaigns-preview">
-        <h2 class="section-title" data-i18n="campaignTitle">Your Daily Campaign Schedule</h2>
-        <div class="campaigns-grid">
-            <div class="campaign-card">
-                <div class="campaign-time">6:00 AM</div>
-                <span class="campaign-lang">FA</span>
-                <h3 class="campaign-title" data-i18n="morningTitle">Morning Motivation</h3>
-                <p class="campaign-desc" data-i18n="morningDesc">Celestial Minimalism with Nastaʿlīq calligraphy. Navy-to-gold gradients.</p>
-            </div>
-            <div class="campaign-card">
-                <div class="campaign-time">12:00 PM</div>
-                <span class="campaign-lang">PS</span>
-                <h3 class="campaign-title" data-i18n="middayTitle">General Information</h3>
-                <p class="campaign-desc" data-i18n="middayDesc">Organic "Hujra" aesthetic with hand-drawn textures. Warm earthy tones.</p>
-            </div>
-            <div class="campaign-card">
-                <div class="campaign-time">6:00 PM</div>
-                <span class="campaign-lang">FA</span>
-                <h3 class="campaign-title" data-i18n="eveningTitle">Service Promotion</h3>
-                <p class="campaign-desc" data-i18n="eveningDesc">Modern Classic with high-res photography. Detail callouts.</p>
-            </div>
-            <div class="campaign-card">
-                <div class="campaign-time">12:00 AM</div>
-                <span class="campaign-lang">EN</span>
-                <h3 class="campaign-title" data-i18n="nightTitle">Brand Awareness</h3>
-                <p class="campaign-desc" data-i18n="nightDesc">Tactile Stop-Motion with handcrafted assembly. 12fps stutter.</p>
-            </div>
-        </div>
-    </section>
-    
-    <div class="form-container">
-        <div class="form-card">
-            <div class="form-header">
-                <h2 data-i18n="formTitle">Create Your Campaign</h2>
-                <p data-i18n="formSubtitle">Fill in your brand details to generate your free sample</p>
-            </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">🎯 MASEER</div>
+            <p class="tagline" data-i18n="tagline">AI Video Marketing for Afghan Businesses</p>
+        </header>
+
+        <section class="hero">
+            <h2 data-i18n="hero-title">4 Professional Videos Daily</h2>
+            <p data-i18n="hero-desc">Automated AI-generated marketing videos optimized for Instagram and Facebook. 1224×1536 Meta-optimized format in Dari, Pashto, and English.</p>
             
-            <div class="alert alert-error" id="errorAlert"></div>
-            <div class="alert alert-success" id="successAlert"></div>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🌅</div>
+                    <h4 data-i18n="feat-morning">6AM Celestial</h4>
+                    <p data-i18n="feat-morning-desc">Morning motivation</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏛️</div>
+                    <h4 data-i18n="feat-midday">12PM Organic</h4>
+                    <p data-i18n="feat-midday-desc">Community trust</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💼</div>
+                    <h4 data-i18n="feat-evening">6PM Kinetic</h4>
+                    <p data-i18n="feat-evening-desc">Service promotion</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎭</div>
+                    <h4 data-i18n="feat-night">12AM Tactile</h4>
+                    <p data-i18n="feat-night-desc">Brand awareness</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h3 data-i18n="form-title">Register Your Brand</h3>
             
-            <form id="registrationForm">
+            <form id="registration-form" action="#" method="POST">
                 <div class="form-group">
-                    <label for="brandName" class="required">Brand Name (English)</label>
-                    <input type="text" id="brandName" required placeholder="e.g., Zarrin Jewelry">
+                    <label for="brand_name" class="required" data-i18n="label-brand">Brand Name (English)</label>
+                    <input type="text" id="brand_name" name="brand_name" required 
+                           placeholder="e.g., Zarrin Jewelry" 
+                           pattern="[\w\s\-&]+"
+                           maxlength="50"
+                           title="Only letters, numbers, spaces, hyphens, and & allowed">
+                    <p class="help-text">Max 50 characters. Used for filenames and video watermarks.</p>
+                    <span class="error-message" data-i18n="error-brand">Please enter a valid brand name</span>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="localName">Brand Name (Dari/Pashto)</label>
-                    <input type="text" id="localName" dir="rtl" placeholder="مثلاً: زرین جواهرات">
+                    <label for="local_name" data-i18n="label-local">Brand Name (Dari/Pashto)</label>
+                    <input type="text" id="local_name" name="local_name" 
+                           placeholder="e.g., زرین جواهرات" 
+                           dir="rtl"
+                           style="font-family: 'Noto Naskh Arabic', serif;">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="industry" class="required">Industry</label>
-                    <select id="industry" required>
-                        <option value="">Select industry...</option>
+                    <label for="industry" class="required" data-i18n="label-industry">Industry</label>
+                    <select id="industry" name="industry" required>
+                        <option value="" data-i18n="select-industry">Select your industry...</option>
                         <option value="Jewelry & Gold">Jewelry & Gold</option>
                         <option value="Café & Restaurant">Café & Restaurant</option>
                         <option value="Fashion & Clothing">Fashion & Clothing</option>
@@ -364,76 +443,266 @@
                         <option value="Agriculture">Agriculture</option>
                         <option value="Handicrafts">Handicrafts</option>
                     </select>
+                    <span class="error-message" data-i18n="error-industry">Please select an industry</span>
                 </div>
-                
-                <div class="form-group">
-                    <label for="facebookPage" class="required">Facebook Page URL</label>
-                    <input type="url" id="facebookPage" required placeholder="https://facebook.com/yourpage">
-                </div>
-                
-                <div class="form-group">
-                    <label for="contact">WhatsApp Number</label>
-                    <input type="tel" id="contact" placeholder="+93 70 123 4567">
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Brand Colors</label>
-                    <div class="color-group">
-                        <div>
-                            <input type="text" id="primaryColor" value="#6B21A8" placeholder="Primary #6B21A8">
-                            <input type="color" id="primaryColorPicker" value="#6B21A8">
+
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="primary_color" class="required" data-i18n="label-primary">Primary Color</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="primary_color" name="primary_color" value="#6B21A8" required>
+                            <span class="color-value" id="primary-value">#6B21A8</span>
                         </div>
-                        <div>
-                            <input type="text" id="secondaryColor" value="#EAB308" placeholder="Secondary #EAB308">
-                            <input type="color" id="secondaryColorPicker" value="#EAB308">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secondary_color" data-i18n="label-secondary">Secondary Color</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="secondary_color" name="secondary_color" value="#EAB308">
+                            <span class="color-value" id="secondary-value">#EAB308</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="targetAudience">Target Audience</label>
-                    <input type="text" id="targetAudience" placeholder="e.g., Women 25-45 in Kabul">
+                    <label for="key_offerings" data-i18n="label-offerings">Key Products/Services</label>
+                    <textarea id="key_offerings" name="key_offerings" rows="3" 
+                              placeholder="e.g., Handmade 24K gold jewelry with traditional Afghan designs"
+                              maxlength="500"></textarea>
+                    <p class="help-text">Brief description for AI content generation. Max 500 characters.</p>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="keyOfferings">Key Products/Services</label>
-                    <input type="text" id="keyOfferings" placeholder="What makes your brand special?">
+                    <label for="target_audience" data-i18n="label-audience">Target Audience</label>
+                    <input type="text" id="target_audience" name="target_audience" 
+                           placeholder="e.g., Affluent women 25-45 in Kabul"
+                           maxlength="200">
                 </div>
-                
+
                 <div class="form-group">
-                    <label>Brand Logo</label>
-                    <div class="upload-zone" id="uploadZone">
-                        <div class="upload-icon">📁</div>
-                        <div class="upload-text">Drop logo or click to browse</div>
-                        <div class="upload-hint">PNG with transparency preferred (max 2MB)</div>
-                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                    <label for="contact_info" data-i18n="label-contact">WhatsApp Number</label>
+                    <input type="tel" id="contact_info" name="contact_info" 
+                           placeholder="+93 70 123 4567"
+                           pattern="\+93\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4}">
+                    <p class="help-text">Format: +93 70 123 4567 (for video delivery notifications)</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="facebook_page" data-i18n="label-facebook">Facebook Page (optional)</label>
+                    <input type="url" id="facebook_page" name="facebook_page" 
+                           placeholder="https://facebook.com/yourpage">
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="label-logo">Brand Logo</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg,.svg">
+                        <label for="logo" class="file-input-label" id="logo-label">
+                            📎 Click to upload logo (PNG/JPG/SVG, max 2MB)
+                        </label>
                     </div>
-                    <div class="file-preview" id="filePreview">
-                        <img id="previewImg" src="" alt="Logo">
-                        <div class="file-info">
-                            <div class="file-name" id="fileName"></div>
-                            <div class="file-size" id="fileSize"></div>
-                        </div>
-                        <button type="button" class="remove-file" onclick="App.removeFile()">×</button>
+                    <p class="help-text">Transparent PNG recommended. Will be uploaded after form submission.</p>
+                    <span class="error-message" id="logo-error"></span>
+                </div>
+
+                <div class="schedule-info">
+                    <h4 data-i18n="schedule-title">Your Daily Video Schedule (Kabul Time)</h4>
+                    <div class="schedule-grid">
+                        <div>🌅 6:00 AM - Morning Motivation (Persian)</div>
+                        <div>🏛️ 12:00 PM - General Info (Pashto)</div>
+                        <div>💼 6:00 PM - Service Promo (Persian)</div>
+                        <div>🎭 12:00 AM - Brand Awareness (English)</div>
                     </div>
                 </div>
-                
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    Generate My Sample Video
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms_sample" name="request_sample" checked>
+                    <label for="terms_sample" data-i18n="checkbox-sample">
+                        I want to receive a FREE sample video immediately (3-5 minutes generation time)
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms_daily" required>
+                    <label for="terms_daily" data-i18n="checkbox-daily">
+                        I want to receive 4 daily AI marketing videos and agree to the terms
+                    </label>
+                </div>
+
+                <button type="submit" id="submit-btn">
+                    <span data-i18n="btn-submit">🚀 Register & Generate Sample</span>
                 </button>
             </form>
-        </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Maseer Media. Built for the Afghan business community.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+                <a href="https://github.com/Ad8bA-1011/maseer_automation" style="color: var(--primary);">Backend</a> • 
+                <a href="mailto:adeeb.yousofi12@gmail.com" style="color: var(--primary);">Support</a>
+            </p>
+        </footer>
     </div>
-    
-    <footer>
-        <p>© 2026 Maseer Media Inc. | Kabul, Afghanistan</p>
-        <div class="contact-links">
-            <a href="mailto:adeeb.yousofi12@gmail.com">Email</a>
-            <a href="https://github.com/Ad8bA-1011">GitHub</a>
-        </div>
-    </footer>
-    
+
+    <!-- Scripts -->
     <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/color-picker.js"></script>
+    <script>
+        /**
+         * Maseer Portal - Main Application (Inline for reliability)
+         * Two-step upload: Form → Logo Instructions → GitHub Issue
+         */
+        
+        const CONFIG = {
+            BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
+            MAX_LOGO_SIZE: 2 * 1024 * 1024, // 2MB
+            ALLOWED_LOGO_TYPES: ['image/png', 'image/jpeg', 'image/svg+xml'],
+            ALLOWED_EXTENSIONS: ['.png', '.jpg', '.jpeg', '.svg']
+        };
+
+        let pendingLogo = null;
+        let pendingLogoData = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registration-form');
+            const logoInput = document.getElementById('logo');
+            const logoLabel = document.getElementById('logo-label');
+
+            // Logo file handling
+            if (logoInput && logoLabel) {
+                logoInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    
+                    if (!file) {
+                        logoLabel.classList.remove('file-selected');
+                        logoLabel.innerHTML = '📎 Click to upload logo (PNG/JPG/SVG, max 2MB)';
+                        pendingLogo = null;
+                        pendingLogoData = null;
+                        return;
+                    }
+
+                    const error = validateLogo(file);
+                    if (error) {
+                        showError('logo-error', error);
+                        logoInput.value = '';
+                        return;
+                    }
+
+                    clearError('logo-error');
+                    pendingLogo = file;
+
+                    // Read as base64 for preview/storage
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        pendingLogoData = e.target.result;
+                        logoLabel.classList.add('file-selected');
+                        logoLabel.innerHTML = `✓ ${escapeHtml(file.name)} (${formatFileSize(file.size)})<br><small style="color: var(--secondary);">Ready for upload</small>`;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Form submission
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const submitBtn = document.getElementById('submit-btn');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    // Validate
+                    const errors = validateForm(form);
+                    if (errors.length > 0) {
+                        alert('Please fix the following errors:\n\n• ' + errors.join('\n• '));
+                        return;
+                    }
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner"></span> Processing...';
+
+                    try {
+                        const formData = new FormData(form);
+                        const brandName = formData.get('brand_name');
+
+                        // Store logo in sessionStorage for next step
+                        if (pendingLogo && pendingLogoData) {
+                            try {
+                                sessionStorage.setItem('maseer_pending_logo', pendingLogoData);
+                                sessionStorage.setItem('maseer_logo_filename', pendingLogo.name);
+                            } catch (e) {
+                                console.warn('Logo too large for sessionStorage, will upload manually');
+                            }
+                        }
+                        
+                        sessionStorage.setItem('maseer_pending_brand', brandName);
+
+                        // Redirect to logo upload instructions
+                        window.location.href = 'upload-logo.html';
+
+                    } catch (err) {
+                        console.error('Error:', err);
+                        alert('An error occurred. Please try again.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                });
+            }
+        });
+
+        function validateLogo(file) {
+            if (file.size > CONFIG.MAX_LOGO_SIZE) {
+                return `Logo too large (${formatFileSize(file.size)}). Max 2MB.`;
+            }
+            if (!CONFIG.ALLOWED_LOGO_TYPES.includes(file.type)) {
+                return `Invalid type. Use PNG, JPG, or SVG.`;
+            }
+            return null;
+        }
+
+        function validateForm(form) {
+            const errors = [];
+            const data = new FormData(form);
+            
+            const brand = data.get('brand_name');
+            if (!brand || brand.length < 2) errors.push('Brand name required (min 2 chars)');
+            else if (!/^[\w\s\-&]+$/.test(brand)) errors.push('Brand: only letters, numbers, spaces, -, &');
+            
+            if (!data.get('industry')) errors.push('Select an industry');
+            
+            if (!data.get('primary_color')?.match(/^#[0-9A-Fa-f]{6}$/)) {
+                errors.push('Invalid primary color');
+            }
+            
+            if (!form.querySelector('#terms_daily').checked) {
+                errors.push('You must agree to receive daily videos');
+            }
+            
+            return errors;
+        }
+
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            if (el) { el.textContent = msg; el.classList.add('visible'); }
+        }
+
+        function clearError(id) {
+            const el = document.getElementById(id);
+            if (el) { el.textContent = ''; el.classList.remove('visible'); }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
 </body>
 </html>
