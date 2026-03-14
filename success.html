@@ -2,72 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="10;url=https://Ad8bA-1011.github.io/maseer_portal/">
-    
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
-    
-    <title>Success - Maseer Media</title>
-    
+    <meta http-equiv="refresh" content="5;url=https://Ad8bA-1011.github.io/maseer_portal/">
+    <title>Success</title>
     <style>
-        :root { --primary: #6B21A8; --secondary: #EAB308; --success: #10B981; --dark: #0F172A; --light: #F8FAFC; }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Noto Sans', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
-            color: var(--light);
-            min-height: 100vh;
+            font-family: system-ui, sans-serif;
+            background: #0F172A;
+            color: #F8FAFC;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
             text-align: center;
         }
-        
-        .container {
-            max-width: 500px;
-            padding: 3rem 2rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1.5rem;
-            margin: 1rem;
-        }
-        
-        .icon { font-size: 4rem; margin-bottom: 1rem; }
-        h1 { color: var(--success); margin-bottom: 1rem; }
-        p { color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.6; }
-        
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .countdown { margin-top: 2rem; font-size: 0.9rem; color: #64748b; }
-        .countdown span { color: var(--secondary); font-weight: 600; }
+        .box { max-width: 400px; padding: 2rem; }
+        h1 { color: #10B981; }
+        p { color: #94a3b8; margin: 1rem 0; }
+        a { color: #6B21A8; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="icon">🎉</div>
-        <h1>Registration Complete!</h1>
-        <p>Your GitHub issue has been created. Please check your WhatsApp for the sample video in 3-5 minutes.</p>
-        <a href="https://Ad8bA-1011.github.io/maseer_portal/" class="btn">Return to Homepage</a>
-        <p class="countdown">Redirecting in <span id="timer">10</span>s...</p>
+    <div class="box">
+        <h1>✅ Success!</h1>
+        <p>Please complete your registration on GitHub.<br>Sample video will arrive in 3-5 minutes.</p>
+        <p><a href="https://Ad8bA-1011.github.io/maseer_portal/">Return home</a></p>
     </div>
-    
-    <script>
-        let seconds = 10;
-        const timer = setInterval(() => {
-            seconds--;
-            document.getElementById('timer').textContent = seconds;
-            if (seconds <= 0) clearInterval(timer);
-        }, 1000);
-    </script>
 </body>
 </html>
