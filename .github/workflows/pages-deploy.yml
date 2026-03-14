@@ -1,0 +1,90 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+# Permissions required for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper versioning
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true  # Enable GitHub Pages if not already enabled
+
+      - name: Check for Jekyll or static
+        id: check_content
+        run: |
+          if [ -f "Gemfile" ] || [ -f "_config.yml" ]; then
+            echo "builder=jekyll" >> $GITHUB_OUTPUT
+          else
+            echo "builder=static" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build with Jekyll
+        if: steps.check_content.outputs.builder == 'jekyll'
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+          future: false
+          unpublished: false
+
+      - name: Build static site
+        if: steps.check_content.outputs.builder == 'static'
+        run: |
+          # Create _site directory and copy all files
+          mkdir -p _site
+          cp -r assets _site/ 2>/dev/null || true
+          cp *.html _site/ 2>/dev/null || true
+          cp *.md _site/ 2>/dev/null || true
+          cp *.txt _site/ 2>/dev/null || true
+          cp .nojekyll _site/ 2>/dev/null || true
+          
+          # List contents for debugging
+          echo "Site contents:"
+          ls -la _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+          retention-days: 1
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+      - name: Output deployment URL
+        run: |
+          echo "🌐 Site deployed to: ${{ steps.deployment.outputs.page_url }}"
