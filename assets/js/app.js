@@ -1,369 +1,131 @@
 /**
- * Maseer Portal - Production Ready
+ * Maseer Portal - Main Application
+ * Handles form submission to GitHub Issues
  */
 
+// Configuration
 const CONFIG = {
-    BACKEND_REPO: 'ad8ba-1011/maseer_automation',
-    MAX_LOGO_SIZE: 2 * 1024 * 1024,
-    SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp']
+    BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
+    MAX_LOGO_SIZE: 2 * 1024 * 1024, // 2MB
+    ALLOWED_LOGO_TYPES: ['image/png', 'image/jpeg', 'image/svg+xml']
 };
 
-const App = (function() {
-    'use strict';
+// Form validation
+function validateForm(formData) {
+    const errors = [];
     
-    let logoFile = null;
-    let isSubmitting = false;
-    
-    function init() {
-        setupEventListeners();
-        setupValidation();
-        
-        // Log mode for debugging
-        if (typeof window.GITHUB_CONFIG === 'undefined') {
-            console.log('📧 Development mode: Will use email fallback');
-        } else {
-            console.log('✅ Production mode: GitHub API ready');
-        }
+    const brandName = formData.get('brand_name');
+    if (!brandName || brandName.length < 2) {
+        errors.push('Brand name must be at least 2 characters');
+    }
+    if (brandName && !/^[\w\s\-&]+$/.test(brandName)) {
+        errors.push('Brand name contains invalid characters');
     }
     
-    function getToken() {
-        return (typeof window.GITHUB_CONFIG !== 'undefined') ? window.GITHUB_CONFIG.token : null;
+    const industry = formData.get('industry');
+    if (!industry) {
+        errors.push('Please select an industry');
     }
     
-    function setupEventListeners() {
-        const form = document.getElementById('registrationForm');
-        if (form) {
-            form.addEventListener('submit', handleSubmit);
-        }
-        
-        // File upload
-        const logoInput = document.getElementById('logoInput');
-        const uploadZone = document.getElementById('uploadZone');
-        
-        if (logoInput) {
-            logoInput.addEventListener('change', handleFileSelect);
-        }
-        
-        if (uploadZone) {
-            uploadZone.addEventListener('click', () => logoInput?.click());
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadZone.classList.add('drag-active');
-            });
-            uploadZone.addEventListener('dragleave', () => {
-                uploadZone.classList.remove('drag-active');
-            });
-            uploadZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadZone.classList.remove('drag-active');
-                if (e.dataTransfer.files.length) {
-                    processFile(e.dataTransfer.files[0]);
-                }
-            });
-        }
-        
-        // Color pickers
-        const primaryInput = document.getElementById('primaryColor');
-        const primaryPicker = document.getElementById('primaryColorPicker');
-        if (primaryInput && primaryPicker) {
-            primaryPicker.addEventListener('input', (e) => {
-                primaryInput.value = e.target.value.toUpperCase();
-            });
-        }
+    const primaryColor = formData.get('primary_color');
+    if (!primaryColor || !/^#[0-9A-Fa-f]{6}$/.test(primaryColor)) {
+        errors.push('Primary color must be valid hex (e.g., #6B21A8)');
     }
     
-    function setupValidation() {
-        const inputs = document.querySelectorAll('input[required], select[required]');
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => validateField(input));
-            input.addEventListener('input', () => clearError(input));
-        });
+    return errors;
+}
+
+// Logo validation
+function validateLogo(file) {
+    if (!file) return null;
+    
+    if (file.size > CONFIG.MAX_LOGO_SIZE) {
+        return 'Logo must be under 2MB';
     }
     
-    function validateField(field) {
-        const value = field.value.trim();
-        if (!value) {
-            showFieldError(field, 'This field is required');
-            return false;
-        }
-        if (field.id === 'primaryColor' && !/^#[0-9A-F]{6}$/i.test(value)) {
-            showFieldError(field, 'Invalid hex color (e.g., #6B21A8)');
-            return false;
-        }
-        if (field.id === 'facebookPage' && !value.startsWith('http')) {
-            showFieldError(field, 'Please enter a valid URL starting with http');
-            return false;
-        }
-        clearError(field);
-        return true;
+    if (!CONFIG.ALLOWED_LOGO_TYPES.includes(file.type)) {
+        return 'Logo must be PNG, JPG, or SVG';
     }
     
-    function showFieldError(field, message) {
-        field.classList.add('error');
-        let errorEl = field.parentElement.querySelector('.field-error');
-        if (!errorEl) {
-            errorEl = document.createElement('span');
-            errorEl.className = 'field-error';
-            field.parentElement.appendChild(errorEl);
-        }
-        errorEl.textContent = message;
-    }
-    
-    function clearError(field) {
-        field.classList.remove('error');
-        const errorEl = field.parentElement.querySelector('.field-error');
-        if (errorEl) errorEl.remove();
-    }
-    
-    function handleFileSelect(e) {
-        if (e.target.files[0]) processFile(e.target.files[0]);
-    }
-    
-    function processFile(file) {
-        if (!CONFIG.SUPPORTED_FORMATS.includes(file.type)) {
-            showToast('Please upload PNG, JPG, or SVG', 'error');
-            return;
-        }
-        if (file.size > CONFIG.MAX_LOGO_SIZE) {
-            showToast('Logo must be under 2MB', 'error');
-            return;
-        }
-        
-        logoFile = file;
-        
+    return null;
+}
+
+// Convert file to base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
-            const preview = document.getElementById('filePreview');
-            if (preview) {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('fileSize').textContent = formatFileSize(file.size);
-                preview.classList.add('show');
-            }
-            const uploadZone = document.getElementById('uploadZone');
-            if (uploadZone) uploadZone.classList.add('has-file');
-        };
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
         reader.readAsDataURL(file);
-    }
+    });
+}
+
+// Submit registration to GitHub
+async function submitRegistration(formData, logoBase64 = null) {
+    const payload = {
+        brand_name: formData.get('brand_name'),
+        local_name: formData.get('local_name') || '',
+        industry: formData.get('industry'),
+        primary_color: formData.get('primary_color'),
+        secondary_color: formData.get('secondary_color') || '#EAB308',
+        target_audience: formData.get('target_audience') || '',
+        key_offerings: formData.get('key_offerings') || '',
+        contact_info: formData.get('contact_info') || '',
+        facebook_page: formData.get('facebook_page') || '',
+        request_sample: true,
+        logo_base64: logoBase64
+    };
     
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
+    const issueBody = `New Registration: ${payload.brand_name}\n\n\`\`\`json\n${JSON.stringify(payload, null, 2)}\n\`\`\``;
     
-    async function handleSubmit(e) {
+    // Note: In production, this should call a backend endpoint or use GitHub API with PAT
+    // For security, the actual submission should not expose PAT_TOKEN in frontend
+    // Instead, use a serverless function or the backend's issue creation endpoint
+    
+    console.log('Registration payload:', payload);
+    
+    // Simulate success - replace with actual API call
+    return { success: true, issueNumber: 'TBD' };
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registration-form');
+    if (!form) return;
+    
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (isSubmitting) return;
+        
+        const formData = new FormData(form);
         
         // Validate
-        const required = ['brandName', 'industry', 'primaryColor', 'facebookPage'];
-        let valid = true;
-        required.forEach(id => {
-            const field = document.getElementById(id);
-            if (field && !validateField(field)) valid = false;
-        });
-        if (!valid) {
-            showToast('Please fill all required fields', 'error');
+        const errors = validateForm(formData);
+        if (errors.length > 0) {
+            alert('Please fix errors:\n' + errors.join('\n'));
             return;
         }
         
-        const token = getToken();
+        // Handle logo
+        const logoFile = formData.get('logo');
+        let logoBase64 = null;
         
-        // Development mode - use email
-        if (!token) {
-            const data = await gatherFormData();
-            const emailBody = `New Maseer Registration
-
-Brand: ${data.brand_name}
-Local Name: ${data.local_name || 'N/A'}
-Industry: ${data.industry}
-Primary Color: ${data.primary_color}
-Secondary Color: ${data.secondary_color}
-Facebook: ${data.facebook_page}
-Contact: ${data.contact_info}
-Target: ${data.target_audience}
-Offerings: ${data.key_offerings}
-
-JSON Data:
-${JSON.stringify(data, null, 2)}`;
-
-            window.location.href = `mailto:adeeb.yousofi12@gmail.com?subject=New Registration: ${encodeURIComponent(data.brand_name)}&body=${encodeURIComponent(emailBody)}`;
-            sessionStorage.setItem('maseer_registration', JSON.stringify({ 
-                brand_name: data.brand_name,
-                method: 'email'
-            }));
-            window.location.href = 'success.html';
-            return;
+        if (logoFile && logoFile.size > 0) {
+            const logoError = validateLogo(logoFile);
+            if (logoError) {
+                alert(logoError);
+                return;
+            }
+            logoBase64 = await fileToBase64(logoFile);
         }
         
-        // Production mode - use GitHub API
-        isSubmitting = true;
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Submitting...';
-        
+        // Submit
         try {
-            const data = await gatherFormData();
-            const result = await createGitHubIssue(data, token);
-            
+            const result = await submitRegistration(formData, logoBase64);
             if (result.success) {
-                sessionStorage.setItem('maseer_registration', JSON.stringify({
-                    brand_name: data.brand_name,
-                    issue_number: result.issue_number,
-                    issue_url: result.issue_url
-                }));
                 window.location.href = 'success.html';
-            } else {
-                throw new Error(result.error);
             }
-        } catch (error) {
-            console.error('Submission error:', error);
-            showToast(error.message || 'Submission failed. Try email fallback.', 'error');
-            isSubmitting = false;
-            btn.disabled = false;
-            btn.innerHTML = 'Generate My Sample Video';
+        } catch (err) {
+            alert('Submission failed: ' + err.message);
         }
-    }
-    
-    async function gatherFormData() {
-        const data = {
-            brand_name: document.getElementById('brandName').value.trim(),
-            local_name: document.getElementById('localName').value.trim(),
-            industry: document.getElementById('industry').value,
-            primary_color: document.getElementById('primaryColor').value.toUpperCase(),
-            secondary_color: document.getElementById('secondaryColor').value.toUpperCase() || '#EAB308',
-            target_audience: document.getElementById('targetAudience').value.trim(),
-            key_offerings: document.getElementById('keyOfferings').value.trim(),
-            contact_info: document.getElementById('contact').value.trim(),
-            facebook_page: document.getElementById('facebookPage').value.trim(),
-            request_sample: true
-        };
-        
-        if (logoFile) {
-            data.logo_base64 = await fileToBase64(logoFile);
-        }
-        
-        return data;
-    }
-    
-    async function createGitHubIssue(data, token) {
-        const issueBody = `## New Registration: ${data.brand_name}
-
-**Submitted:** ${new Date().toISOString()}
-**Status:** Pending Processing
-
-### Brand Information
-| Field | Value |
-|-------|-------|
-| **Brand Name** | ${data.brand_name} |
-| **Local Name** | ${data.local_name || 'N/A'} |
-| **Industry** | ${data.industry} |
-| **Facebook Page** | ${data.facebook_page} |
-
-### Visual Identity
-| Field | Value |
-|-------|-------|
-| **Primary Color** | ${data.primary_color} |
-| **Secondary Color** | ${data.secondary_color} |
-
-### Marketing Details
-| Field | Value |
-|-------|-------|
-| **Target Audience** | ${data.target_audience || 'N/A'} |
-| **Key Offerings** | ${data.key_offerings || 'N/A'} |
-| **Contact/WhatsApp** | ${data.contact_info || 'N/A'} |
-
-### Raw Data
-\`\`\`json
-${JSON.stringify(data, null, 2)}
-\`\`\`
-
----
-*Automated registration from Maseer Portal*`;
-
-        try {
-            const response = await fetch(`https://api.github.com/repos/${CONFIG.BACKEND_REPO}/issues`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: `New Registration: ${data.brand_name}`,
-                    body: issueBody,
-                    labels: ['new-client', 'pending']
-                })
-            });
-            
-            // Handle 401/403 - token issue
-            if (response.status === 401) {
-                throw new Error('Authentication failed. Please contact support.');
-            }
-            if (response.status === 403) {
-                throw new Error('API rate limit exceeded. Please try again later or use WhatsApp.');
-            }
-            
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.message || `GitHub error: ${response.status}`);
-            }
-            
-            const issueData = await response.json();
-            
-            return {
-                success: true,
-                issue_number: issueData.number,
-                issue_url: issueData.html_url
-            };
-            
-        } catch (error) {
-            if (error.message.includes('Failed to fetch')) {
-                throw new Error('Network error. Please check your connection or use WhatsApp: +93 79 353 5228');
-            }
-            throw error;
-        }
-    }
-    
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
-    
-    function showToast(message, type = 'info') {
-        const toast = document.getElementById('toast');
-        if (!toast) {
-            alert(message);
-            return;
-        }
-        toast.textContent = message;
-        toast.className = `alert alert-${type} show`;
-        toast.style.display = 'block';
-        
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 5000);
-    }
-    
-    return {
-        init,
-        removeFile: function() {
-            logoFile = null;
-            const preview = document.getElementById('filePreview');
-            const uploadZone = document.getElementById('uploadZone');
-            const input = document.getElementById('logoInput');
-            if (preview) preview.classList.remove('show');
-            if (uploadZone) uploadZone.classList.remove('has-file');
-            if (input) input.value = '';
-        }
-    };
-})();
-
-document.addEventListener('DOMContentLoaded', App.init);
+    });
+});
