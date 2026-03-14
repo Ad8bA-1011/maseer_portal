@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maseer Media - Register</title>
     
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://github.com; connect-src 'self' https://api.github.com; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -101,6 +107,15 @@
             margin-top: 0.3rem;
         }
         .error.show { display: block; }
+        
+        .privacy-notice {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3B82F6;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
@@ -112,8 +127,8 @@
             <form id="registerForm">
                 <div class="field">
                     <label>Brand Name <span class="required">*</span></label>
-                    <input type="text" name="brand" id="brand" required placeholder="Zarrin Jewelry" maxlength="40">
-                    <div class="error" id="brandError">Required. Use letters, numbers, spaces only.</div>
+                    <input type="text" name="brand" id="brand" required placeholder="Zarrin Jewelry" maxlength="40" pattern="[\w\s\-]{2,50}">
+                    <div class="error" id="brandError">Required. Use letters, numbers, spaces, hyphens only (2-50 chars).</div>
                 </div>
                 
                 <div class="field">
@@ -141,17 +156,22 @@
                 <div class="colors">
                     <div class="field">
                         <label>Primary Color <span class="required">*</span></label>
-                        <input type="color" name="color1" value="#6B21A8" required>
+                        <input type="color" name="color1" id="color1" value="#6B21A8" required>
                     </div>
                     <div class="field">
                         <label>Secondary Color</label>
-                        <input type="color" name="color2" value="#EAB308">
+                        <input type="color" name="color2" id="color2" value="#EAB308">
                     </div>
                 </div>
                 
                 <div class="field">
                     <label>WhatsApp (optional)</label>
-                    <input type="text" name="whatsapp" placeholder="+93 70 123 4567">
+                    <input type="text" name="whatsapp" id="whatsapp" placeholder="+93 70 123 4567" maxlength="20">
+                </div>
+                
+                <div class="field">
+                    <label>Key Products/Services (optional, brief)</label>
+                    <input type="text" name="offerings" id="offerings" placeholder="Handmade gold jewelry" maxlength="100">
                 </div>
                 
                 <div class="checkbox">
@@ -170,39 +190,71 @@
                     ⚠️ You will be redirected to GitHub to complete registration. Please attach your logo in the issue comment.
                 </div>
                 
+                <div class="privacy-notice">
+                    🔒 <strong>Privacy:</strong> We track form engagement to improve UX. No personal data is stored on our servers—all data goes to GitHub Issues. See our <a href="PRIVACY.md" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+                </div>
+                
                 <div id="status">
                     ✅ Opening GitHub...<br>
-                    <a href="#" id="githubLink" target="_blank">Click here if not redirected</a>
+                    <a href="#" id="githubLink" target="_blank" rel="noopener noreferrer">Click here if not redirected</a>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
+        // Configuration
+        const CONFIG = {
+            BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
+            MAX_URL_LENGTH: 7000,  // GitHub has ~8KB limit, we stay safe at ~7KB
+            MAX_BODY_LENGTH: 4000
+        };
+        
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Get values
             const brand = document.getElementById('brand').value.trim();
             const industry = document.getElementById('industry').value;
-            const color1 = this.querySelector('[name="color1"]').value;
-            const color2 = this.querySelector('[name="color2"]').value;
-            const whatsapp = this.querySelector('[name="whatsapp"]').value.trim();
-            const sample = this.querySelector('[name="sample"]').checked;
+            const color1 = document.getElementById('color1').value;
+            const color2 = document.getElementById('color2').value;
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const offerings = document.getElementById('offerings').value.trim();
+            const sample = document.getElementById('sample').checked;
             
             // Validate
             if (!brand || brand.length < 2) {
                 document.getElementById('brandError').classList.add('show');
                 return;
             }
+            
+            // Strict brand name validation
+            if (!/^[\w\s\-]{2,50}$/.test(brand)) {
+                document.getElementById('brandError').classList.add('show');
+                return;
+            }
+            
             if (!industry) {
                 alert('Please select an industry');
                 return;
             }
             
-            // Build minimal body (NO markdown tables, NO backticks in JSON to avoid escaping issues)
+            // Build minimal body
             const timestamp = new Date().toISOString();
-            const body = `New Registration: ${brand}
+            const payload = {
+                brand_name: brand,
+                industry: industry,
+                primary_color: color1,
+                secondary_color: color2,
+                contact_info: whatsapp,
+                key_offerings: offerings,
+                request_sample: sample,
+                submitted_at: timestamp,
+                source: 'maseer_portal'
+            };
+            
+            // Create compact body
+            let body = `New Registration: ${brand}
 
 Industry: ${industry}
 Primary Color: ${color1}
@@ -212,27 +264,42 @@ Sample Requested: ${sample ? 'Yes' : 'No'}
 Submitted: ${timestamp}
 
 Data JSON:
-{"brand":"${brand}","industry":"${industry}","color1":"${color1}","color2":"${color2}","whatsapp":"${whatsapp}","sample":${sample},"time":"${timestamp}"}
+${JSON.stringify(payload)}
 
 ---
 Reply with logo attachment (PNG/JPG, max 2MB)
 Portal: https://Ad8bA-1011.github.io/maseer_portal/`;
             
-            // Build URL - encode properly
+            // Check body length
+            if (body.length > CONFIG.MAX_BODY_LENGTH) {
+                alert('Form data too long. Please shorten product description.');
+                return;
+            }
+            
+            // Build URL
             const title = encodeURIComponent(`New Registration: ${brand}`);
             const encodedBody = encodeURIComponent(body);
-            const labels = encodeURIComponent('new-client,portal');
+            const labels = encodeURIComponent('new-client,portal-registration');
             
-            const url = `https://github.com/Ad8bA-1011/maseer_automation/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
+            const url = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
+            
+            // Check URL length
+            if (url.length > CONFIG.MAX_URL_LENGTH) {
+                alert('Registration data too long. Please use shorter brand name or description.');
+                return;
+            }
             
             // Debug
             console.log('URL length:', url.length);
-            console.log('URL:', url.substring(0, 200) + '...');
             
             // Show status
             document.getElementById('status').classList.add('active');
             document.getElementById('githubLink').href = url;
             document.getElementById('btn').disabled = true;
+            
+            // Store minimal data for next step (no logo in sessionStorage)
+            sessionStorage.setItem('maseer_pending_brand', brand);
+            sessionStorage.setItem('maseer_sample_requested', sample);
             
             // Try to open
             const newWindow = window.open(url, '_blank');
