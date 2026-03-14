@@ -3,46 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="10;url=https://Ad8bA-1011.github.io/maseer_portal/">
     
-    <!-- Dynamic redirect based on params -->
-    <script>
-        // Check if we came from skip option
-        const params = new URLSearchParams(window.location.search);
-        const noLogo = params.get('nologo');
-        
-        // Set appropriate redirect timing
-        const redirectSeconds = noLogo ? 10 : 15;
-        const redirectUrl = 'https://Ad8bA-1011.github.io/maseer_portal/';
-    </script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
     
-    <meta http-equiv="refresh" content="15;url=https://Ad8bA-1011.github.io/maseer_portal/">
-    
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    
-    <title>Registration Successful - Maseer Media</title>
-    <meta name="description" content="Your brand has been successfully registered for AI video marketing.">
+    <title>Success - Maseer Media</title>
     
     <style>
-        :root {
-            --primary: #6B21A8;
-            --secondary: #EAB308;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --dark: #0F172A;
-            --light: #F8FAFC;
-        }
+        :root { --primary: #6B21A8; --secondary: #EAB308; --success: #10B981; --dark: #0F172A; --light: #F8FAFC; }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Noto Sans', system-ui, sans-serif;
             background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
             color: var(--light);
             min-height: 100vh;
@@ -52,8 +25,8 @@
             text-align: center;
         }
         
-        .success-container {
-            max-width: 600px;
+        .container {
+            max-width: 500px;
             padding: 3rem 2rem;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -61,213 +34,40 @@
             margin: 1rem;
         }
         
-        .success-icon {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            animation: scaleIn 0.5s ease-out;
-        }
-        
-        @keyframes scaleIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--success);
-        }
-        
-        .message {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        
-        .warning-box {
-            background: rgba(245, 158, 11, 0.1);
-            border-left: 4px solid var(--warning);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: left;
-            border-radius: 0 0.5rem 0.5rem 0;
-            display: none;
-        }
-        
-        .warning-box.visible {
-            display: block;
-        }
-        
-        .warning-box h3 {
-            color: var(--warning);
-            margin-bottom: 0.75rem;
-        }
-        
-        .details {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid var(--success);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: left;
-            border-radius: 0 0.5rem 0.5rem 0;
-        }
-        
-        .details h3 {
-            color: var(--success);
-            margin-bottom: 0.75rem;
-        }
-        
-        .details ul {
-            list-style: none;
-            color: #cbd5e1;
-        }
-        
-        .details li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        
-        .details li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--success);
-        }
-        
-        .countdown {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-top: 2rem;
-        }
-        
-        .countdown span {
-            color: var(--secondary);
-            font-weight: 600;
-        }
+        .icon { font-size: 4rem; margin-bottom: 1rem; }
+        h1 { color: var(--success); margin-bottom: 1rem; }
+        p { color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.6; }
         
         .btn {
             display: inline-block;
-            margin-top: 2rem;
             padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            background: var(--primary);
             color: white;
             text-decoration: none;
             border-radius: 0.5rem;
             font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(107, 33, 168, 0.3);
-        }
-        
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            margin-left: 0.5rem;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
-            box-shadow: none;
-        }
-        
-        .telegram-cta {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 0.5rem;
-        }
-        
-        .telegram-cta a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 600;
-        }
+        .countdown { margin-top: 2rem; font-size: 0.9rem; color: #64748b; }
+        .countdown span { color: var(--secondary); font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="success-container">
-        <div class="success-icon">🎉</div>
-        <h1>Registration Successful!</h1>
-        
-        <p class="message" id="main-message">
-            Your brand has been registered for Maseer Media's AI video marketing service.
-            Your sample video is now being generated.
-        </p>
-        
-        <!-- Warning for no-logo submissions -->
-        <div class="warning-box" id="nologo-warning">
-            <h3>⚠️ Logo Not Uploaded</h3>
-            <p>You skipped the logo upload step. Your sample video will be generated with text-only branding.</p>
-            <p style="margin-top: 0.5rem;"><strong>To add your logo later:</strong> Reply to your GitHub issue with the logo attached, or contact support.</p>
-        </div>
-        
-        <div class="details">
-            <h3>What happens next?</h3>
-            <ul>
-                <li>Sample video generation: <strong>3-5 minutes</strong></li>
-                <li>Delivery via: <strong>Telegram/WhatsApp</strong></li>
-                <li>Daily videos start: <strong>Next campaign cycle (6AM Kabul)</strong></li>
-                <li>Video format: <strong>1224×1536 (4:5 Meta-optimized)</strong></li>
-            </ul>
-        </div>
-        
-        <div class="telegram-cta">
-            <p>📱 <strong>Join our Telegram channel for updates:</strong></p>
-            <p style="margin-top: 0.5rem;">
-                <a href="https://t.me/maseermedia" target="_blank">t.me/maseermedia</a>
-            </p>
-        </div>
-        
-        <p class="countdown">
-            Redirecting to homepage in <span id="timer">15</span> seconds...
-        </p>
-        
-        <div>
-            <a href="https://Ad8bA-1011.github.io/maseer_portal/" class="btn">Return to Homepage</a>
-            <a href="https://github.com/Ad8bA-1011/maseer_automation/issues" class="btn btn-secondary" target="_blank">View My Issue</a>
-        </div>
+    <div class="container">
+        <div class="icon">🎉</div>
+        <h1>Registration Complete!</h1>
+        <p>Your GitHub issue has been created. Please check your WhatsApp for the sample video in 3-5 minutes.</p>
+        <a href="https://Ad8bA-1011.github.io/maseer_portal/" class="btn">Return to Homepage</a>
+        <p class="countdown">Redirecting in <span id="timer">10</span>s...</p>
     </div>
-
+    
     <script>
-        // Check for nologo parameter
-        const params = new URLSearchParams(window.location.search);
-        const noLogo = params.get('nologo');
-        const timerEl = document.getElementById('timer');
-        
-        if (noLogo) {
-            document.getElementById('nologo-warning').classList.add('visible');
-            document.getElementById('main-message').textContent = 
-                'Your brand has been registered for Maseer Media\'s AI video marketing service. ' +
-                'Your sample video will be generated with text-only branding (no logo provided).';
-            document.querySelector('meta[http-equiv="refresh"]').content = "10;url=https://Ad8bA-1011.github.io/maseer_portal/";
-            timerEl.textContent = '10';
-        }
-        
-        // Countdown timer
-        let seconds = noLogo ? 10 : 15;
-        
-        const interval = setInterval(() => {
+        let seconds = 10;
+        const timer = setInterval(() => {
             seconds--;
-            timerEl.textContent = seconds;
-            
-            if (seconds <= 0) {
-                clearInterval(interval);
-            }
+            document.getElementById('timer').textContent = seconds;
+            if (seconds <= 0) clearInterval(timer);
         }, 1000);
-        
-        // Manual redirect stops timer
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                if (e.target.getAttribute('href')?.includes('maseer_portal')) {
-                    clearInterval(interval);
-                }
-            });
-        });
     </script>
 </body>
 </html>
