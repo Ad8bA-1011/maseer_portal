@@ -3,539 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    
-    <title>Maseer Media - AI Video Marketing for Afghan Businesses</title>
-    <meta name="description" content="Automated AI video marketing for Afghan brands. 4 professional videos daily, optimized for Instagram and Facebook.">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Maseer Media - Register</title>
     
     <style>
-        :root {
-            --primary: #6B21A8;
-            --secondary: #EAB308;
-            --dark: #0F172A;
-            --light: #F8FAFC;
-            --success: #10B981;
-            --error: #EF4444;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
-            color: var(--light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
+            color: #F8FAFC;
             min-height: 100vh;
-            line-height: 1.6;
+            padding: 2rem 1rem;
         }
-        
-        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-        
-        header { text-align: center; padding: 3rem 0; }
-        
-        .logo {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #6B21A8, #EAB308);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-align: center;
             margin-bottom: 0.5rem;
         }
+        .subtitle { text-align: center; color: #94a3b8; margin-bottom: 2rem; }
         
-        .tagline { color: #94a3b8; font-size: 1.1rem; }
-        
-        .hero {
+        .form {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 1rem;
-            padding: 2rem;
-            margin: 2rem 0;
+            padding: 1.5rem;
+        }
+        .field { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; color: #cbd5e1; }
+        .required { color: #EF4444; }
+        
+        input, select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0.4rem;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 0.95rem;
+        }
+        input:focus, select:focus { outline: none; border-color: #6B21A8; }
+        
+        .colors { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        input[type="color"] { width: 100%; height: 40px; padding: 0; border: none; }
+        
+        .checkbox {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .checkbox input { width: auto; margin-top: 0.15rem; }
+        
+        button {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #6B21A8, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(234, 179, 8, 0.1);
+            border-left: 3px solid #EAB308;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        #status {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
             text-align: center;
         }
+        #status.active { display: block; }
+        #status a { color: #10B981; text-decoration: none; font-weight: 600; }
         
-        .hero h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--secondary); }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
+        .error {
+            display: none;
+            color: #EF4444;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
         }
-        
-        .feature {
-            background: rgba(255,255,255,0.03);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        
-        .form-section {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .form-section h3 { color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.5rem; }
-        
-        .form-group { margin-bottom: 1.5rem; }
-        
-        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #cbd5e1; }
-        
-        .required::after { content: " *"; color: var(--error); }
-        
-        input[type="text"], input[type="tel"], input[type="url"], input[type="color"], select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 0.5rem;
-            background: rgba(0,0,0,0.3);
-            color: var(--light);
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
-        
-        input::placeholder, textarea::placeholder { color: #64748b; }
-        
-        .color-picker-wrapper { display: flex; align-items: center; gap: 1rem; }
-        
-        input[type="color"] {
-            width: 60px; height: 40px; padding: 0; border: none; border-radius: 0.25rem; cursor: pointer;
-        }
-        
-        .color-value { font-family: monospace; color: #94a3b8; }
-        
-        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
-        
-        .file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
-        
-        .file-input-label {
-            display: block; padding: 0.75rem; border: 2px dashed rgba(255,255,255,0.3);
-            border-radius: 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s; color: #94a3b8;
-        }
-        
-        .file-input-label:hover { border-color: var(--primary); background: rgba(107, 33, 168, 0.1); }
-        .file-selected { border-color: var(--success) !important; color: var(--success) !important; }
-        
-        .checkbox-group { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; }
-        .checkbox-group input[type="checkbox"] { width: auto; margin-top: 0.25rem; accent-color: var(--primary); }
-        .checkbox-group label { margin: 0; font-weight: normal; font-size: 0.9rem; color: #94a3b8; }
-        
-        button[type="submit"] {
-            width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--primary), #7c3aed);
-            color: white; border: none; border-radius: 0.5rem; font-size: 1.1rem; font-weight: 600;
-            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        button[type="submit"]:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(107, 33, 168, 0.3); }
-        button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
-        
-        .spinner {
-            display: inline-block; width: 20px; height: 20px;
-            border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white;
-            animation: spin 1s ease-in-out infinite; margin-left: 0.5rem; vertical-align: middle;
-        }
-        
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .error-message { color: var(--error); font-size: 0.875rem; margin-top: 0.25rem; display: none; }
-        .error-message.visible { display: block; }
-        
-        .schedule-info {
-            background: rgba(234, 179, 8, 0.1); border-left: 4px solid var(--secondary);
-            padding: 1rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0;
-        }
-        
-        .schedule-info h4 { color: var(--secondary); margin-bottom: 0.5rem; }
-        
-        .schedule-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;
-            font-size: 0.9rem; color: #94a3b8;
-        }
-        
-        .help-text { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
-        
-        footer { text-align: center; padding: 2rem; color: #64748b; font-size: 0.875rem; }
-        
-        .language-switcher {
-            position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 100;
-        }
-        
-        .lang-btn {
-            padding: 0.5rem 1rem; background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2); color: var(--light);
-            border-radius: 0.25rem; cursor: pointer; transition: all 0.2s;
-        }
-        
-        .lang-btn.active, .lang-btn:hover { background: var(--primary); border-color: var(--primary); }
-        
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
-        }
-        
-        .modal-overlay.visible { display: flex; }
-        
-        .modal {
-            background: var(--dark); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 1rem; padding: 2rem; max-width: 500px; width: 90%; text-align: center;
-        }
-        
-        .modal h3 { color: var(--secondary); margin-bottom: 1rem; }
-        .modal p { color: #94a3b8; margin-bottom: 1.5rem; }
-        
-        .modal-buttons { display: flex; gap: 1rem; flex-direction: column; }
-        
-        .modal-btn {
-            padding: 1rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;
-            transition: all 0.2s;
-        }
-        
-        .modal-btn-primary { background: var(--primary); color: white; }
-        .modal-btn-secondary { background: rgba(255,255,255,0.1); color: var(--light); }
-        .modal-btn:hover { transform: translateY(-2px); }
-        
-        @media (max-width: 600px) {
-            .logo { font-size: 2rem; }
-            .hero h2 { font-size: 1.3rem; }
-            .features { grid-template-columns: 1fr; }
-            .schedule-grid { grid-template-columns: 1fr; }
-        }
+        .error.show { display: block; }
     </style>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="language-switcher">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="fa">FA</button>
-        <button class="lang-btn" data-lang="ps">PS</button>
-    </div>
-
     <div class="container">
-        <header>
-            <div class="logo">🎯 MASEER</div>
-            <p class="tagline">AI Video Marketing for Afghan Businesses</p>
-        </header>
-
-        <section class="hero">
-            <h2>4 Professional Videos Daily</h2>
-            <p>Automated AI-generated marketing videos optimized for Instagram and Facebook. 1224×1536 Meta-optimized format.</p>
-            
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">🌅</div>
-                    <h4>6AM Celestial</h4>
-                    <p>Morning motivation</p>
+        <h1>🎯 MASEER</h1>
+        <p class="subtitle">AI Video Marketing for Afghan Businesses</p>
+        
+        <div class="form">
+            <form id="registerForm">
+                <div class="field">
+                    <label>Brand Name <span class="required">*</span></label>
+                    <input type="text" name="brand" id="brand" required placeholder="Zarrin Jewelry" maxlength="40">
+                    <div class="error" id="brandError">Required. Use letters, numbers, spaces only.</div>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">🏛️</div>
-                    <h4>12PM Organic</h4>
-                    <p>Community trust</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">💼</div>
-                    <h4>6PM Kinetic</h4>
-                    <p>Service promotion</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🎭</div>
-                    <h4>12AM Tactile</h4>
-                    <p>Brand awareness</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="form-section">
-            <h3>Register Your Brand</h3>
-            
-            <form id="registration-form">
-                <div class="form-group">
-                    <label for="brand_name" class="required">Brand Name (English)</label>
-                    <input type="text" id="brand_name" name="brand_name" required 
-                           placeholder="e.g., Zarrin Jewelry" 
-                           pattern="[\w\s\-&]+" maxlength="50">
-                    <p class="help-text">Max 50 characters. Used for filenames.</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="local_name">Brand Name (Dari/Pashto)</label>
-                    <input type="text" id="local_name" name="local_name" 
-                           placeholder="e.g., زرین جواهرات" dir="rtl"
-                           style="font-family: 'Noto Naskh Arabic', serif;">
-                </div>
-
-                <div class="form-group">
-                    <label for="industry" class="required">Industry</label>
-                    <select id="industry" name="industry" required>
-                        <option value="">Select your industry...</option>
-                        <option value="Jewelry & Gold">Jewelry & Gold</option>
-                        <option value="Café & Restaurant">Café & Restaurant</option>
-                        <option value="Fashion & Clothing">Fashion & Clothing</option>
-                        <option value="Technology & IT">Technology & IT</option>
-                        <option value="Healthcare & Medical">Healthcare & Medical</option>
-                        <option value="Education & Training">Education & Training</option>
-                        <option value="Real Estate">Real Estate</option>
-                        <option value="Automotive">Automotive</option>
-                        <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
-                        <option value="Construction & Materials">Construction & Materials</option>
-                        <option value="Consultancy & Services">Consultancy & Services</option>
-                        <option value="Retail & Shopping">Retail & Shopping</option>
-                        <option value="Travel & Hospitality">Travel & Hospitality</option>
-                        <option value="Agriculture">Agriculture</option>
-                        <option value="Handicrafts">Handicrafts</option>
+                
+                <div class="field">
+                    <label>Industry <span class="required">*</span></label>
+                    <select name="industry" id="industry" required>
+                        <option value="">Select...</option>
+                        <option>Jewelry & Gold</option>
+                        <option>Café & Restaurant</option>
+                        <option>Fashion & Clothing</option>
+                        <option>Technology & IT</option>
+                        <option>Healthcare & Medical</option>
+                        <option>Education & Training</option>
+                        <option>Real Estate</option>
+                        <option>Automotive</option>
+                        <option>Beauty & Cosmetics</option>
+                        <option>Construction & Materials</option>
+                        <option>Consultancy & Services</option>
+                        <option>Retail & Shopping</option>
+                        <option>Travel & Hospitality</option>
+                        <option>Agriculture</option>
+                        <option>Handicrafts</option>
                     </select>
                 </div>
-
-                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label for="primary_color" class="required">Primary Color</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" id="primary_color" name="primary_color" value="#6B21A8" required>
-                            <span class="color-value" id="primary-value">#6B21A8</span>
-                        </div>
+                
+                <div class="colors">
+                    <div class="field">
+                        <label>Primary Color <span class="required">*</span></label>
+                        <input type="color" name="color1" value="#6B21A8" required>
                     </div>
-
-                    <div class="form-group">
-                        <label for="secondary_color">Secondary Color</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" id="secondary_color" name="secondary_color" value="#EAB308">
-                            <span class="color-value" id="secondary-value">#EAB308</span>
-                        </div>
+                    <div class="field">
+                        <label>Secondary Color</label>
+                        <input type="color" name="color2" value="#EAB308">
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="key_offerings">Key Products/Services</label>
-                    <textarea id="key_offerings" name="key_offerings" rows="3" 
-                              placeholder="e.g., Handmade 24K gold jewelry" maxlength="500"></textarea>
+                
+                <div class="field">
+                    <label>WhatsApp (optional)</label>
+                    <input type="text" name="whatsapp" placeholder="+93 70 123 4567">
                 </div>
-
-                <div class="form-group">
-                    <label for="target_audience">Target Audience</label>
-                    <input type="text" id="target_audience" name="target_audience" 
-                           placeholder="e.g., Affluent women 25-45 in Kabul">
+                
+                <div class="checkbox">
+                    <input type="checkbox" name="sample" id="sample" checked>
+                    <label for="sample">Request FREE sample video (3-5 min)</label>
                 </div>
-
-                <div class="form-group">
-                    <label for="contact_info">WhatsApp Number</label>
-                    <input type="tel" id="contact_info" name="contact_info" 
-                           placeholder="+93 70 123 4567">
-                    <p class="help-text">For video delivery notifications</p>
+                
+                <div class="checkbox">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to receive 4 daily AI marketing videos</label>
                 </div>
-
-                <div class="form-group">
-                    <label for="facebook_page">Facebook Page (optional)</label>
-                    <input type="url" id="facebook_page" name="facebook_page" 
-                           placeholder="https://facebook.com/yourpage">
+                
+                <button type="submit" id="btn">Create GitHub Issue</button>
+                
+                <div class="note">
+                    ⚠️ You will be redirected to GitHub to complete registration. Please attach your logo in the issue comment.
                 </div>
-
-                <div class="form-group">
-                    <label>Brand Logo</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg,.svg">
-                        <label for="logo" class="file-input-label" id="logo-label">
-                            📎 Click to upload logo (PNG/JPG/SVG, max 2MB)
-                        </label>
-                    </div>
-                    <p class="help-text">Optional. You can upload later on GitHub.</p>
+                
+                <div id="status">
+                    ✅ Opening GitHub...<br>
+                    <a href="#" id="githubLink" target="_blank">Click here if not redirected</a>
                 </div>
-
-                <div class="schedule-info">
-                    <h4>Your Daily Video Schedule (Kabul Time)</h4>
-                    <div class="schedule-grid">
-                        <div>🌅 6:00 AM - Persian</div>
-                        <div>🏛️ 12:00 PM - Pashto</div>
-                        <div>💼 6:00 PM - Persian</div>
-                        <div>🎭 12:00 AM - English</div>
-                    </div>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="terms_sample" name="request_sample" checked>
-                    <label for="terms_sample">Request FREE sample video (3-5 min generation)</label>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="terms_daily" required>
-                    <label for="terms_daily">I agree to receive 4 daily AI marketing videos</label>
-                </div>
-
-                <button type="submit" id="submit-btn">🚀 Create GitHub Issue</button>
             </form>
-        </section>
-
-        <footer>
-            <p>© 2026 Maseer Media. Built for the Afghan business community.</p>
-            <p style="margin-top: 0.5rem;">
-                <a href="https://github.com/Ad8bA-1011/maseer_automation" style="color: var(--primary);">Backend</a> • 
-                <a href="mailto:adeeb.yousofi12@gmail.com" style="color: var(--primary);">Support</a>
-            </p>
-        </footer>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="modal-overlay" id="success-modal">
-        <div class="modal">
-            <h3>✅ Issue Ready to Create</h3>
-            <p>Click below to open GitHub and create your registration issue. You'll need to be logged into GitHub.</p>
-            <div class="modal-buttons">
-                <a href="#" class="modal-btn modal-btn-primary" id="github-link" target="_blank">
-                    🚀 Open GitHub Issue
-                </a>
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
         </div>
     </div>
 
-    <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/color-picker.js"></script>
     <script>
-        // Inline main app logic
-        const CONFIG = {
-            BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
-            MAX_LOGO_SIZE: 2 * 1024 * 1024
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('registration-form');
-            const logoInput = document.getElementById('logo');
-            const logoLabel = document.getElementById('logo-label');
-            const modal = document.getElementById('success-modal');
-            const githubLink = document.getElementById('github-link');
-
-            // Logo file handling
-            logoInput?.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) {
-                    logoLabel.classList.remove('file-selected');
-                    logoLabel.textContent = '📎 Click to upload logo (PNG/JPG/SVG, max 2MB)';
-                    return;
-                }
-                if (file.size > CONFIG.MAX_LOGO_SIZE) {
-                    alert('Logo too large. Max 2MB.');
-                    logoInput.value = '';
-                    return;
-                }
-                logoLabel.classList.add('file-selected');
-                logoLabel.innerHTML = `✓ ${file.name} (${(file.size/1024).toFixed(1)} KB)<br><small>Will upload on GitHub</small>`;
-            });
-
-            // Form submission - DIRECT GitHub issue creation
-            form?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                // Validate
-                const brand = document.getElementById('brand_name').value.trim();
-                const industry = document.getElementById('industry').value;
-                
-                if (!brand || brand.length < 2) {
-                    alert('Please enter a valid brand name (min 2 characters)');
-                    return;
-                }
-                if (!industry) {
-                    alert('Please select an industry');
-                    return;
-                }
-                if (!document.getElementById('terms_daily').checked) {
-                    alert('You must agree to receive daily videos');
-                    return;
-                }
-
-                // Build issue body
-                const formData = new FormData(form);
-                const title = `New Registration: ${brand}`;
-                const body = buildIssueBody(formData);
-                
-                // Build GitHub URL
-                const url = new URL(`https://github.com/${CONFIG.BACKEND_REPO}/issues/new`);
-                url.searchParams.set('title', title);
-                url.searchParams.set('body', body);
-                url.searchParams.set('labels', 'new-client,portal-registration');
-                
-                // Check URL length (max ~8000)
-                if (url.toString().length > 7500) {
-                    alert('Form data too long. Please shorten descriptions.');
-                    return;
-                }
-
-                // Show modal with link
-                githubLink.href = url.toString();
-                modal.classList.add('visible');
-            });
-        });
-
-        function buildIssueBody(formData) {
-            const data = Object.fromEntries(formData.entries());
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            const payload = {
-                brand_name: data.brand_name,
-                local_name: data.local_name || '',
-                industry: data.industry,
-                primary_color: data.primary_color,
-                secondary_color: data.secondary_color || '#EAB308',
-                key_offerings: (data.key_offerings || '').substring(0, 300),
-                target_audience: (data.target_audience || '').substring(0, 100),
-                contact_info: data.contact_info || '',
-                facebook_page: data.facebook_page || '',
-                request_sample: data.request_sample === 'on',
-                submitted_at: new Date().toISOString(),
-                source: 'maseer_portal'
-            };
+            // Get values
+            const brand = document.getElementById('brand').value.trim();
+            const industry = document.getElementById('industry').value;
+            const color1 = this.querySelector('[name="color1"]').value;
+            const color2 = this.querySelector('[name="color2"]').value;
+            const whatsapp = this.querySelector('[name="whatsapp"]').value.trim();
+            const sample = this.querySelector('[name="sample"]').checked;
+            
+            // Validate
+            if (!brand || brand.length < 2) {
+                document.getElementById('brandError').classList.add('show');
+                return;
+            }
+            if (!industry) {
+                alert('Please select an industry');
+                return;
+            }
+            
+            // Build minimal body (NO markdown tables, NO backticks in JSON to avoid escaping issues)
+            const timestamp = new Date().toISOString();
+            const body = `New Registration: ${brand}
 
-            let body = `## 🎯 New Registration via Maseer Portal
+Industry: ${industry}
+Primary Color: ${color1}
+Secondary Color: ${color2}
+WhatsApp: ${whatsapp || 'Not provided'}
+Sample Requested: ${sample ? 'Yes' : 'No'}
+Submitted: ${timestamp}
 
-**Brand:** ${payload.brand_name}
-**Industry:** ${payload.industry}
-**Submitted:** ${payload.submitted_at}
-
-### Registration Data
-\\`\\`\\`json
-${JSON.stringify(payload, null, 2)}
-\\`\\`\\`
-
----
-
-### 📎 Next Steps
-
-**To complete registration:**
-
-1. ✅ Review the information above
-2. 🖼️ **Reply to this issue with your logo attached** (drag & drop into comment box)
-   - Format: PNG, JPG, or SVG
-   - Max size: 2MB
-   - Transparent PNG recommended
-3. ⏳ Wait 3-5 minutes for sample video generation
-4. 📱 Receive video via WhatsApp/Telegram
-
-**Without logo:** Videos will use text-only branding.
+Data JSON:
+{"brand":"${brand}","industry":"${industry}","color1":"${color1}","color2":"${color2}","whatsapp":"${whatsapp}","sample":${sample},"time":"${timestamp}"}
 
 ---
-
-*Registered via [Maseer Portal](https://Ad8bA-1011.github.io/maseer_portal/)*
-*Questions: adeeb.yousofi12@gmail.com*`;
-
-            return body;
-        }
-
-        function closeModal() {
-            document.getElementById('success-modal').classList.remove('visible');
-        }
-
-        // Close modal on outside click
-        document.getElementById('success-modal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'success-modal') closeModal();
+Reply with logo attachment (PNG/JPG, max 2MB)
+Portal: https://Ad8bA-1011.github.io/maseer_portal/`;
+            
+            // Build URL - encode properly
+            const title = encodeURIComponent(`New Registration: ${brand}`);
+            const encodedBody = encodeURIComponent(body);
+            const labels = encodeURIComponent('new-client,portal');
+            
+            const url = `https://github.com/Ad8bA-1011/maseer_automation/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
+            
+            // Debug
+            console.log('URL length:', url.length);
+            console.log('URL:', url.substring(0, 200) + '...');
+            
+            // Show status
+            document.getElementById('status').classList.add('active');
+            document.getElementById('githubLink').href = url;
+            document.getElementById('btn').disabled = true;
+            
+            // Try to open
+            const newWindow = window.open(url, '_blank');
+            
+            // Check if popup blocked
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                alert('Popup blocked! Please allow popups for this site, or click the link below.');
+                document.getElementById('githubLink').style.color = '#EAB308';
+            } else {
+                // Success - redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'success.html';
+                }, 1000);
+            }
+        });
+        
+        // Hide error on input
+        document.getElementById('brand').addEventListener('input', function() {
+            document.getElementById('brandError').classList.remove('show');
         });
     </script>
 </body>
