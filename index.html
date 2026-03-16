@@ -6,34 +6,93 @@
     <title>Maseer Media - AI Video Marketing</title>
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://github.com; connect-src 'self' https://api.github.com; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="bg-animation"></div>
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="bg-particles" id="particles"></div>
+    </div>
     
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
     <!-- Language Switcher -->
     <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="en">English</button>
-        <button class="lang-btn" data-lang="fa">فارسی</button>
-        <button class="lang-btn" data-lang="ps">پښتو</button>
+        <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
+        <button class="lang-btn" data-lang="fa" aria-label="فارسی">فا</button>
+        <button class="lang-btn" data-lang="ps" aria-label="پښتو">پښ</button>
     </div>
 
     <div class="container">
         <!-- Hero Section -->
         <section class="hero">
-            <h1 class="logo">🎯 MASEER</h1>
+            <div class="hero-badge">
+                <span class="pulse-dot"></span>
+                <span data-i18n="hero-badge">Now serving 50+ Afghan brands</span>
+            </div>
+            <h1 class="logo">
+                <span class="logo-icon">🎯</span>
+                <span class="logo-text">MASEER</span>
+            </h1>
             <p class="tagline" data-i18n="tagline">AI Video Marketing for Afghan Businesses</p>
+            <p class="hero-subtitle" data-i18n="hero-subtitle">Get 4 professional videos daily, automatically generated and delivered to your WhatsApp</p>
+            
             <div class="meta-badge">
-                <span>📐 1224×1536</span>
-                <span>•</span>
-                <span>Meta-Optimized</span>
-                <span>•</span>
-                <span>4 Videos/Day</span>
+                <div class="badge-item">
+                    <span class="badge-icon">📐</span>
+                    <span>1224×1536</span>
+                </div>
+                <div class="badge-divider"></div>
+                <div class="badge-item">
+                    <span class="badge-icon">⚡</span>
+                    <span>Meta-Optimized</span>
+                </div>
+                <div class="badge-divider"></div>
+                <div class="badge-item">
+                    <span class="badge-icon">🎬</span>
+                    <span>4 Videos/Day</span>
+                </div>
+            </div>
+            
+            <a href="#register" class="cta-button" data-i18n="cta-start">Start Free Trial →</a>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <h2 class="section-title" data-i18n="how-title">How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📝</div>
+                    <h3 data-i18n="step-1-title">Register Your Brand</h3>
+                    <p data-i18n="step-1-desc">Fill in your business details and upload your logo</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">🤖</div>
+                    <h3 data-i18n="step-2-title">AI Generates Videos</h3>
+                    <p data-i18n="step-2-desc">Our AI creates 4 unique videos daily in Dari, Pashto & English</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">📱</div>
+                    <h3 data-i18n="step-3-title">Receive on WhatsApp</h3>
+                    <p data-i18n="step-3-desc">Get your videos delivered automatically every 6 hours</p>
+                </div>
             </div>
         </section>
 
@@ -42,263 +101,487 @@
             <h2 class="section-title" data-i18n="schedule-title">Your Daily Video Schedule (Kabul Time)</h2>
             <div class="campaigns-grid">
                 <div class="campaign-card" style="--campaign-color: #60A5FA;">
-                    <span class="campaign-icon">🌅</span>
-                    <div class="campaign-time">6:00 AM</div>
+                    <div class="campaign-time-badge">6:00 AM</div>
+                    <div class="campaign-icon">🌅</div>
                     <span class="campaign-lang">Persian/Dari</span>
                     <h3 class="campaign-title" data-i18n="feat-morning">Celestial Morning</h3>
-                    <p class="campaign-desc" data-i18n="feat-morning-desc">Inspirational content to start the day</p>
+                    <p class="campaign-desc" data-i18n="feat-morning-desc">Inspirational content to start the day with calm, ethereal visuals</p>
+                    <div class="campaign-tags">
+                        <span class="tag">Nastaʿlīq Script</span>
+                        <span class="tag">Navy & Gold</span>
+                    </div>
                 </div>
                 <div class="campaign-card" style="--campaign-color: #D97706;">
-                    <span class="campaign-icon">🏛️</span>
-                    <div class="campaign-time">12:00 PM</div>
+                    <div class="campaign-time-badge">12:00 PM</div>
+                    <div class="campaign-icon">🏛️</div>
                     <span class="campaign-lang">Pashto</span>
                     <h3 class="campaign-title" data-i18n="feat-midday">Organic Midday</h3>
-                    <p class="campaign-desc" data-i18n="feat-midday-desc">Community trust & engagement</p>
+                    <p class="campaign-desc" data-i18n="feat-midday-desc">Community trust with warm, grounded Hujra aesthetic</p>
+                    <div class="campaign-tags">
+                        <span class="tag">Rounded Typography</span>
+                        <span class="tag">Terracotta</span>
+                    </div>
                 </div>
                 <div class="campaign-card" style="--campaign-color: #A855F7;">
-                    <span class="campaign-icon">💼</span>
-                    <div class="campaign-time">6:00 PM</div>
+                    <div class="campaign-time-badge">6:00 PM</div>
+                    <div class="campaign-icon">💼</div>
                     <span class="campaign-lang">Persian/Dari</span>
                     <h3 class="campaign-title" data-i18n="feat-evening">Kinetic Evening</h3>
-                    <p class="campaign-desc" data-i18n="feat-evening-desc">Service promotion & conversions</p>
+                    <p class="campaign-desc" data-i18n="feat-evening-desc">Service promotion with professional, dynamic energy</p>
+                    <div class="campaign-tags">
+                        <span class="tag">Bold Sans-Serif</span>
+                        <span class="tag">Purple & Amber</span>
+                    </div>
                 </div>
                 <div class="campaign-card" style="--campaign-color: #EC4899;">
-                    <span class="campaign-icon">🎭</span>
-                    <div class="campaign-time">12:00 AM</div>
+                    <div class="campaign-time-badge">12:00 AM</div>
+                    <div class="campaign-icon">🎭</div>
                     <span class="campaign-lang">English</span>
                     <h3 class="campaign-title" data-i18n="feat-night">Tactile Night</h3>
-                    <p class="campaign-desc" data-i18n="feat-night-desc">Brand awareness & recall</p>
+                    <p class="campaign-desc" data-i18n="feat-night-desc">Brand awareness with bold, artistic stop-motion style</p>
+                    <div class="campaign-tags">
+                        <span class="tag">Geometric Bold</span>
+                        <span class="tag">Neon Accents</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Registration Form -->
-        <section class="form-card">
-            <div class="form-header">
-                <h2 data-i18n="form-title">Register Your Brand</h2>
-                <p>Complete all fields for optimal AI video generation</p>
-            </div>
-
-            <form id="registerForm">
-                <!-- Basic Information -->
-                <div class="form-section">
-                    <h3 class="section-subtitle" data-i18n="section-basic">Basic Information</h3>
+        <section class="form-section-wrapper" id="register">
+            <div class="form-card">
+                <div class="form-header">
+                    <div class="form-badge" data-i18n="form-badge">Free Sample Included</div>
+                    <h2 data-i18n="form-title">Register Your Brand</h2>
+                    <p data-i18n="form-subtitle">Complete all 15 fields for optimal AI video generation. Takes just 2 minutes.</p>
                     
-                    <div class="form-group">
-                        <label data-i18n="label-brand">Brand Name (English) <span class="required">*</span></label>
-                        <input type="text" name="client_name" id="client_name" required 
-                               placeholder="e.g., Zarrin Jewelry" maxlength="50" 
-                               pattern="[\w\s\-]{2,50}">
-                        <span class="field-error" data-i18n="error-brand">Please enter a valid brand name</span>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label data-i18n="label-category">Category/Industry <span class="required">*</span></label>
-                            <select name="category" id="category" required>
-                                <option value="" data-i18n="select-industry">Select industry...</option>
-                                <option value="Jewelry & Gold">Jewelry & Gold</option>
-                                <option value="Café & Restaurant">Café & Restaurant</option>
-                                <option value="Fashion & Clothing">Fashion & Clothing</option>
-                                <option value="Technology & IT">Technology & IT</option>
-                                <option value="Healthcare & Medical">Healthcare & Medical</option>
-                                <option value="Education & Training">Education & Training</option>
-                                <option value="Real Estate">Real Estate</option>
-                                <option value="Automotive">Automotive</option>
-                                <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
-                                <option value="Construction & Materials">Construction & Materials</option>
-                                <option value="Consultancy & Services">Consultancy & Services</option>
-                                <option value="Retail & Shopping">Retail & Shopping</option>
-                                <option value="Travel & Hospitality">Travel & Hospitality</option>
-                                <option value="Agriculture">Agriculture</option>
-                                <option value="Handicrafts">Handicrafts</option>
-                            </select>
+                    <!-- Form Progress -->
+                    <div class="form-progress">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <span data-i18n="progress-basic">Basic</span>
                         </div>
-
-                        <div class="form-group">
-                            <label data-i18n="label-subcategory">Sub-Category <span class="required">*</span></label>
-                            <select name="sub_category" id="sub_category" required disabled>
-                                <option value="" data-i18n="select-subcategory">Select category first</option>
-                            </select>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <span data-i18n="progress-brand">Brand</span>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label data-i18n="label-target-audience">Target Audience <span class="required">*</span></label>
-                        <input type="text" name="target_audience" id="target_audience" required
-                               placeholder="e.g., Affluent women 25-45 in Kabul" maxlength="100">
-                    </div>
-                </div>
-
-                <!-- Brand Identity -->
-                <div class="form-section">
-                    <h3 class="section-subtitle" data-i18n="section-brand">Brand Identity</h3>
-                    
-                    <div class="form-row color-group">
-                        <div class="form-group">
-                            <label data-i18n="label-primary">Primary Brand Color <span class="required">*</span></label>
-                            <div class="color-input-wrapper">
-                                <input type="text" name="primary_brand_color" id="primary_brand_color" 
-                                       value="#6B21A8" required placeholder="#6B21A8" maxlength="7">
-                                <input type="color" id="primary_color_picker" value="#6B21A8">
-                            </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <span data-i18n="progress-content">Content</span>
                         </div>
-
-                        <div class="form-group">
-                            <label data-i18n="label-secondary">Secondary Brand Color</label>
-                            <div class="color-input-wrapper">
-                                <input type="text" name="secondary_brand_color" id="secondary_brand_color" 
-                                       value="#EAB308" placeholder="#EAB308" maxlength="7">
-                                <input type="color" id="secondary_color_picker" value="#EAB308">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label data-i18n="label-font">Font Preference</label>
-                            <select name="font_preference" id="font_preference">
-                                <option value="auto" data-i18n="font-auto">Auto (Campaign-based)</option>
-                                <option value="nastaliq" data-i18n="font-nastaliq">Nastaʿlīq (Traditional)</option>
-                                <option value="modern" data-i18n="font-modern">Modern Sans-Serif</option>
-                                <option value="bold" data-i18n="font-bold">Bold/Impact</option>
-                                <option value="elegant" data-i18n="font-elegant">Elegant/Script</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label data-i18n="label-language">Primary Language</label>
-                            <select name="language_preference" id="language_preference">
-                                <option value="auto" data-i18n="lang-auto">Auto (Campaign-based)</option>
-                                <option value="fa" data-i18n="lang-fa">Persian/Dari</option>
-                                <option value="ps" data-i18n="lang-ps">Pashto</option>
-                                <option value="en" data-i18n="lang-en">English</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label data-i18n="label-logo">Brand Logo <span class="required">*</span></label>
-                        <div class="upload-zone" id="logoUpload">
-                            <span class="upload-icon">📎</span>
-                            <div class="upload-text" data-i18n="logo-placeholder">Click to upload logo (PNG/JPG/SVG, max 2MB)</div>
-                            <div class="upload-hint" data-i18n="logo-hint">Transparent PNG recommended</div>
-                            <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/svg+xml" required hidden>
-                        </div>
-                        <div class="file-preview" id="logoPreview">
-                            <img src="" alt="Logo preview" id="logoPreviewImg">
-                            <div class="file-info">
-                                <div class="file-name" id="logoFileName"></div>
-                                <div class="file-size" id="logoFileSize"></div>
-                            </div>
-                            <button type="button" class="remove-file" id="removeLogo">✕</button>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <span data-i18n="progress-contact">Contact</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Marketing Content -->
-                <div class="form-section">
-                    <h3 class="section-subtitle" data-i18n="section-marketing">Marketing Content</h3>
-                    
-                    <div class="form-group">
-                        <label data-i18n="label-usp1">Key Selling Point #1 <span class="required">*</span></label>
-                        <input type="text" name="key_usp_1" id="key_usp_1" required
-                               placeholder="Main unique selling proposition" maxlength="80">
-                    </div>
-
-                    <div class="form-group">
-                        <label data-i18n="label-usp2">Key Selling Point #2</label>
-                        <input type="text" name="key_usp_2" id="key_usp_2"
-                               placeholder="Secondary unique selling proposition" maxlength="80">
-                    </div>
-
-                    <div class="form-group">
-                        <label data-i18n="label-offer">Current Offer/Promotion Focus</label>
-                        <input type="text" name="current_offer_focus" id="current_offer_focus"
-                               placeholder="e.g., Ramadan Sale, New Collection Launch" maxlength="60">
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label data-i18n="label-seasonal">Seasonal/Cultural Theme</label>
-                            <select name="seasonal_theme" id="seasonal_theme">
-                                <option value="none" data-i18n="theme-none">None/General</option>
-                                <option value="ramadan" data-i18n="theme-ramadan">Ramadan</option>
-                                <option value="eid" data-i18n="theme-eid">Eid</option>
-                                <option value="nowruz" data-i18n="theme-nowruz">Nowruz</option>
-                                <option value="winter" data-i18n="theme-winter">Winter Season</option>
-                                <option value="spring" data-i18n="theme-spring">Spring/New Beginnings</option>
-                            </select>
+                <form id="registerForm" novalidate>
+                    <!-- Step 1: Basic Information -->
+                    <div class="form-step active" data-step="1">
+                        <div class="step-header">
+                            <h3 class="section-subtitle" data-i18n="section-basic">Basic Information</h3>
+                            <span class="step-counter">1/4</span>
                         </div>
-
-                        <div class="form-group">
-                            <label data-i18n="label-meta">Meta/Facebook Page ID</label>
-                            <input type="text" name="meta_page_id" id="meta_page_id"
-                                   placeholder="For direct posting integration" maxlength="50">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label data-i18n="label-notes">Special Instructions for AI</label>
-                        <textarea name="ai_modification_notes" id="ai_modification_notes"
-                                  placeholder="Any specific requirements, things to emphasize or avoid..." 
-                                  maxlength="300" rows="3"></textarea>
-                    </div>
-                </div>
-
-                <!-- Contact & Consent -->
-                <div class="form-section">
-                    <h3 class="section-subtitle" data-i18n="section-contact">Contact & Delivery</h3>
-                    
-                    <div class="form-group">
-                        <label data-i18n="label-whatsapp">WhatsApp Number <span class="required">*</span></label>
-                        <input type="tel" name="contact_info" id="contact_info" required
-                               placeholder="+93 70 123 4567" maxlength="20">
-                    </div>
-
-                    <div class="checkbox-group">
-                        <label class="checkbox">
-                            <input type="checkbox" name="request_sample" id="request_sample" checked>
-                            <span data-i18n="checkbox-sample">Request FREE sample video immediately (auto-generated in 3-5 minutes)</span>
-                        </label>
                         
-                        <label class="checkbox">
-                            <input type="checkbox" name="terms" id="terms" required>
-                            <span data-i18n="checkbox-daily">I agree to receive 4 daily AI marketing videos and accept the terms</span>
-                        </label>
+                        <div class="form-group">
+                            <label for="client_name" data-i18n="label-brand">Brand Name (English) <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">🏢</span>
+                                <input type="text" name="client_name" id="client_name" required 
+                                       placeholder="e.g., Zarrin Jewelry" maxlength="50" 
+                                       pattern="[\w\s\-]{2,50}" autocomplete="organization">
+                            </div>
+                            <span class="field-error" id="client_name-error" data-i18n="error-brand">Please enter a valid brand name (2-50 characters)</span>
+                            <span class="field-hint" data-i18n="hint-brand">This will appear on all your videos</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category" data-i18n="label-category">Category/Industry <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">🏭</span>
+                                    <select name="category" id="category" required>
+                                        <option value="" data-i18n="select-industry">Select your industry...</option>
+                                        <option value="Jewelry & Gold">💎 Jewelry & Gold</option>
+                                        <option value="Café & Restaurant">☕ Café & Restaurant</option>
+                                        <option value="Fashion & Clothing">👔 Fashion & Clothing</option>
+                                        <option value="Technology & IT">💻 Technology & IT</option>
+                                        <option value="Healthcare & Medical">🏥 Healthcare & Medical</option>
+                                        <option value="Education & Training">📚 Education & Training</option>
+                                        <option value="Real Estate">🏠 Real Estate</option>
+                                        <option value="Automotive">🚗 Automotive</option>
+                                        <option value="Beauty & Cosmetics">💄 Beauty & Cosmetics</option>
+                                        <option value="Construction & Materials">🏗️ Construction & Materials</option>
+                                        <option value="Consultancy & Services">📊 Consultancy & Services</option>
+                                        <option value="Retail & Shopping">🛍️ Retail & Shopping</option>
+                                        <option value="Travel & Hospitality">✈️ Travel & Hospitality</option>
+                                        <option value="Agriculture">🌾 Agriculture</option>
+                                        <option value="Handicrafts">🎨 Handicrafts</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="category-error" data-i18n="error-category">Please select an industry</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sub_category" data-i18n="label-subcategory">Sub-Category <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">📂</span>
+                                    <select name="sub_category" id="sub_category" required disabled>
+                                        <option value="" data-i18n="select-subcategory">Select category first...</option>
+                                    </select>
+                                </div>
+                                <div class="loading-indicator" id="subCategoryLoading" style="display: none;">
+                                    <span class="spinner-small"></span>
+                                    <span>Loading...</span>
+                                </div>
+                                <span class="field-error" id="sub_category-error" data-i18n="error-subcategory">Please select a sub-category</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="target_audience" data-i18n="label-target-audience">Target Audience <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">👥</span>
+                                <input type="text" name="target_audience" id="target_audience" required
+                                       placeholder="e.g., Affluent women 25-45 in Kabul" maxlength="100">
+                            </div>
+                            <span class="field-hint" data-i18n="hint-target">Helps AI tailor content to your customers</span>
+                        </div>
+
+                        <div class="step-actions">
+                            <button type="button" class="btn-next" data-next="2">
+                                <span data-i18n="btn-next">Next: Brand Identity →</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="alert alert-error" id="errorAlert"></div>
-                <div class="alert alert-success" id="successAlert"></div>
+                    <!-- Step 2: Brand Identity -->
+                    <div class="form-step" data-step="2">
+                        <div class="step-header">
+                            <h3 class="section-subtitle" data-i18n="section-brand">Brand Identity</h3>
+                            <span class="step-counter">2/4</span>
+                        </div>
+                        
+                        <div class="form-row color-group">
+                            <div class="form-group">
+                                <label for="primary_brand_color" data-i18n="label-primary">Primary Brand Color <span class="required">*</span></label>
+                                <div class="color-field">
+                                    <div class="color-preview-wrapper">
+                                        <div class="color-preview-large" id="primaryColorPreview" style="background: #6B21A8;"></div>
+                                        <input type="color" id="primary_color_picker" value="#6B21A8" aria-label="Pick primary color">
+                                    </div>
+                                    <div class="color-input-wrapper">
+                                        <input type="text" name="primary_brand_color" id="primary_brand_color" 
+                                               value="#6B21A8" required placeholder="#6B21A8" maxlength="7" 
+                                               pattern="^#[0-9A-Fa-f]{6}$">
+                                        <button type="button" class="color-suggest" id="suggestSecondary" data-i18n="btn-suggest">Suggest Match</button>
+                                    </div>
+                                </div>
+                                <div class="color-psychology" id="primaryPsychology">
+                                    <span class="psychology-icon">💡</span>
+                                    <span data-i18n="psychology-purple">Purple conveys creativity, luxury, and wisdom</span>
+                                </div>
+                            </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    <span data-i18n="btn-submit">🚀 Register & Generate Sample</span>
-                </button>
+                            <div class="form-group">
+                                <label for="secondary_brand_color" data-i18n="label-secondary">Secondary Brand Color</label>
+                                <div class="color-field">
+                                    <div class="color-preview-wrapper">
+                                        <div class="color-preview-large" id="secondaryColorPreview" style="background: #EAB308;"></div>
+                                        <input type="color" id="secondary_color_picker" value="#EAB308" aria-label="Pick secondary color">
+                                    </div>
+                                    <div class="color-input-wrapper">
+                                        <input type="text" name="secondary_brand_color" id="secondary_brand_color" 
+                                               value="#EAB308" placeholder="#EAB308" maxlength="7">
+                                    </div>
+                                </div>
+                                <div class="color-psychology" id="secondaryPsychology">
+                                    <span class="psychology-icon">💡</span>
+                                    <span data-i18n="psychology-gold">Gold represents success, quality, and prestige</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="font_preference" data-i18n="label-font">Font Style Preference</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">🔤</span>
+                                    <select name="font_preference" id="font_preference">
+                                        <option value="auto" data-i18n="font-auto">🎯 Auto (Campaign-based)</option>
+                                        <option value="nastaliq" data-i18n="font-nastaliq">📜 Nastaʿlīq (Traditional Persian)</option>
+                                        <option value="modern" data-i18n="font-modern">🔲 Modern Sans-Serif</option>
+                                        <option value="bold" data-i18n="font-bold">⬛ Bold/Impact</option>
+                                        <option value="elegant" data-i18n="font-elegant">✨ Elegant/Script</option>
+                                    </select>
+                                </div>
+                                <span class="field-hint" data-i18n="hint-font">Auto matches font to campaign time</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="language_preference" data-i18n="label-language">Primary Language</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">🌍</span>
+                                    <select name="language_preference" id="language_preference">
+                                        <option value="auto" data-i18n="lang-auto">🎯 Auto (All 3 languages)</option>
+                                        <option value="fa" data-i18n="lang-fa">🇦🇫 Persian/Dari only</option>
+                                        <option value="ps" data-i18n="lang-ps">🇵🇰 Pashto only</option>
+                                        <option value="en" data-i18n="lang-en">🇬🇧 English only</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="logo" data-i18n="label-logo">Brand Logo <span class="required">*</span></label>
+                            <div class="upload-zone" id="logoUpload" tabindex="0" role="button" aria-label="Upload logo">
+                                <div class="upload-content">
+                                    <span class="upload-icon">📎</span>
+                                    <div class="upload-text" data-i18n="logo-placeholder">Click or drag to upload logo</div>
+                                    <div class="upload-hint" data-i18n="logo-hint">PNG with transparent background recommended (max 2MB)</div>
+                                    <div class="upload-formats">Supports: PNG, JPG, SVG</div>
+                                </div>
+                                <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/svg+xml" required hidden>
+                            </div>
+                            <div class="file-preview" id="logoPreview">
+                                <div class="preview-image-wrapper">
+                                    <img src="" alt="Logo preview" id="logoPreviewImg">
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-name" id="logoFileName"></div>
+                                    <div class="file-size" id="logoFileSize"></div>
+                                    <div class="file-dimensions" id="logoDimensions"></div>
+                                </div>
+                                <button type="button" class="remove-file" id="removeLogo" aria-label="Remove logo">✕</button>
+                            </div>
+                            <span class="field-error" id="logo-error" data-i18n="error-logo">Please upload your brand logo</span>
+                        </div>
+
+                        <div class="step-actions">
+                            <button type="button" class="btn-prev" data-prev="1">
+                                <span>← <span data-i18n="btn-prev">Back</span></span>
+                            </button>
+                            <button type="button" class="btn-next" data-next="3">
+                                <span data-i18n="btn-next">Next: Marketing →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Marketing Content -->
+                    <div class="form-step" data-step="3">
+                        <div class="step-header">
+                            <h3 class="section-subtitle" data-i18n="section-marketing">Marketing Content</h3>
+                            <span class="step-counter">3/4</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="key_usp_1" data-i18n="label-usp1">Key Selling Point #1 <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">⭐</span>
+                                <input type="text" name="key_usp_1" id="key_usp_1" required
+                                       placeholder="What makes you unique? e.g., Handmade 24K gold jewelry" maxlength="80">
+                            </div>
+                            <span class="char-count"><span id="usp1Count">0</span>/80</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="key_usp_2" data-i18n="label-usp2">Key Selling Point #2</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">✨</span>
+                                <input type="text" name="key_usp_2" id="key_usp_2"
+                                       placeholder="Secondary benefit e.g., Free delivery across Afghanistan" maxlength="80">
+                            </div>
+                            <span class="char-count"><span id="usp2Count">0</span>/80</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="current_offer_focus" data-i18n="label-offer">Current Promotion/Offer Focus</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">🎁</span>
+                                <input type="text" name="current_offer_focus" id="current_offer_focus"
+                                       placeholder="e.g., Ramadan Sale 30% off, New Collection Launch" maxlength="60">
+                            </div>
+                            <span class="field-hint" data-i18n="hint-offer">Leave empty for evergreen content</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seasonal_theme" data-i18n="label-seasonal">Seasonal/Cultural Theme</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">🌙</span>
+                                    <select name="seasonal_theme" id="seasonal_theme">
+                                        <option value="none" data-i18n="theme-none">🎯 None/General</option>
+                                        <option value="ramadan" data-i18n="theme-ramadan">🌙 Ramadan</option>
+                                        <option value="eid" data-i18n="theme-eid">🎉 Eid</option>
+                                        <option value="nowruz" data-i18n="theme-nowruz">🌸 Nowruz</option>
+                                        <option value="winter" data-i18n="theme-winter">❄️ Winter Season</option>
+                                        <option value="spring" data-i18n="theme-spring">🌱 Spring/New Beginnings</option>
+                                        <option value="summer" data-i18n="theme-summer">☀️ Summer</option>
+                                        <option value="autumn" data-i18n="theme-autumn">🍂 Autumn</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meta_page_id" data-i18n="label-meta">Meta/Facebook Page ID</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">📘</span>
+                                    <input type="text" name="meta_page_id" id="meta_page_id"
+                                           placeholder="For future direct posting" maxlength="50">
+                                </div>
+                                <span class="field-hint" data-i18n="hint-meta">Optional: for Meta API integration</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ai_modification_notes" data-i18n="label-notes">Special Instructions for AI</label>
+                            <div class="input-wrapper textarea-wrapper">
+                                <textarea name="ai_modification_notes" id="ai_modification_notes"
+                                          placeholder="Any specific requirements, things to emphasize or avoid in videos..." 
+                                          maxlength="300" rows="3"></textarea>
+                            </div>
+                            <span class="char-count"><span id="notesCount">0</span>/300</span>
+                            <span class="field-hint" data-i18n="hint-notes">e.g., 'Avoid showing faces', 'Emphasize quality over price'</span>
+                        </div>
+
+                        <div class="step-actions">
+                            <button type="button" class="btn-prev" data-prev="2">
+                                <span>← <span data-i18n="btn-prev">Back</span></span>
+                            </button>
+                            <button type="button" class="btn-next" data-next="4">
+                                <span data-i18n="btn-next">Next: Contact →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Contact & Submit -->
+                    <div class="form-step" data-step="4">
+                        <div class="step-header">
+                            <h3 class="section-subtitle" data-i18n="section-contact">Contact & Delivery</h3>
+                            <span class="step-counter">4/4</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact_info" data-i18n="label-whatsapp">WhatsApp Number <span class="required">*</span></label>
+                            <div class="input-wrapper phone-wrapper">
+                                <span class="country-code">+93</span>
+                                <input type="tel" name="contact_info" id="contact_info" required
+                                       placeholder="70 123 4567" maxlength="15">
+                            </div>
+                            <span class="field-hint" data-i18n="hint-whatsapp">Videos will be sent here</span>
+                            <span class="field-error" id="contact_info-error" data-i18n="error-whatsapp">Please enter a valid Afghan phone number</span>
+                        </div>
+
+                        <div class="summary-box" id="formSummary">
+                            <h4 data-i18n="summary-title">Registration Summary</h4>
+                            <div class="summary-content" id="summaryContent">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <label class="checkbox-card">
+                                <input type="checkbox" name="request_sample" id="request_sample" checked>
+                                <div class="checkbox-content">
+                                    <div class="checkbox-title" data-i18n="checkbox-sample-title">🎬 Generate FREE Sample Video Now</div>
+                                    <div class="checkbox-desc" data-i18n="checkbox-sample-desc">Get your first AI video in 3-5 minutes automatically</div>
+                                </div>
+                            </label>
+                            
+                            <label class="checkbox-card required">
+                                <input type="checkbox" name="terms" id="terms" required>
+                                <div class="checkbox-content">
+                                    <div class="checkbox-title" data-i18n="checkbox-terms-title">✓ I agree to receive daily videos</div>
+                                    <div class="checkbox-desc" data-i18n="checkbox-terms-desc">4 videos/day at 6 AM, 12 PM, 6 PM, and 12 AM Kabul time</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="alert alert-error" id="errorAlert"></div>
+                        <div class="alert alert-success" id="successAlert"></div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text" data-i18n="btn-submit">🚀 Complete Registration & Generate Sample</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+
+                        <div class="trust-badges">
+                            <div class="trust-item">
+                                <span>🔒</span>
+                                <span data-i18n="trust-secure">SSL Secure</span>
+                            </div>
+                            <div class="trust-item">
+                                <span>⚡</span>
+                                <span data-i18n="trust-instant">Instant Setup</span>
+                            </div>
+                            <div class="trust-item">
+                                <span>🚫</span>
+                                <span data-i18n="trust-nocredit">No Credit Card</span>
+                            </div>
+                        </div>
+
+                        <div class="step-actions single">
+                            <button type="button" class="btn-prev" data-prev="3">
+                                <span>← <span data-i18n="btn-prev">Back</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
                 <div class="privacy-notice">
-                    <p>🔒 <span data-i18n="privacy-text">Your data is processed via GitHub Issues. No data stored on our servers.</span>
-                    <a href="PRIVACY.md" target="_blank" data-i18n="privacy-link">Privacy Policy</a></p>
+                    <div class="privacy-icon">🛡️</div>
+                    <div class="privacy-content">
+                        <p data-i18n="privacy-text">Your data is processed securely via GitHub Issues. No personal data is stored on our servers.</p>
+                        <a href="PRIVACY.md" target="_blank" rel="noopener noreferrer" data-i18n="privacy-link">Read our Privacy Policy</a>
+                    </div>
                 </div>
-            </form>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2 class="section-title" data-i18n="faq-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary data-i18n="faq-1-q">How long does it take to get my first video?</summary>
+                    <p data-i18n="faq-1-a">Your sample video is generated automatically within 3-5 minutes of registration. Daily videos arrive every 6 hours starting the next day.</p>
+                </details>
+                <details class="faq-item">
+                    <summary data-i18n="faq-2-q">What format are the videos in?</summary>
+                    <p data-i18n="faq-2-a">All videos are 1224×1536 pixels (4:5 aspect ratio), optimized for Instagram Feed, Stories, and Facebook. Duration is 10-12 seconds perfect for reels.</p>
+                </details>
+                <details class="faq-item">
+                    <summary data-i18n="faq-3-q">Can I edit the videos after they're generated?</summary>
+                    <p data-i18n="faq-3-a">Currently videos are delivered as final MP4 files. Use the AI modification notes field to guide how future videos are created.</p>
+                </details>
+            </div>
         </section>
 
         <footer>
-            <p data-i18n="footer-tagline">Premium AI Video Marketing for Afghan Businesses</p>
-            <p class="powered-by">
-                <span>Powered by</span>
-                <strong>Maseer Media</strong>
-                <span>•</span>
-                <span>Kabul, Afghanistan</span>
-            </p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">🎯</span>
+                    <span class="logo-text">MASEER</span>
+                </div>
+                <p class="footer-tagline" data-i18n="footer-tagline">Premium AI Video Marketing for Afghan Businesses</p>
+                <div class="footer-links">
+                    <a href="mailto:adeeb.yousofi12@gmail.com" data-i18n="footer-contact">Contact Support</a>
+                    <span>•</span>
+                    <a href="https://github.com/Ad8bA-1011/maseer_automation" target="_blank" rel="noopener" data-i18n="footer-backend">View Backend</a>
+                </div>
+                <p class="footer-location">📍 Kabul, Afghanistan</p>
+            </div>
         </footer>
     </div>
 
-    <div id="toast"></div>
+    <div id="toast" role="status" aria-live="polite"></div>
 
+    <!-- Scripts -->
     <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/color-picker.js"></script>
-    <script src="assets/js/consciousness.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
 </html>
