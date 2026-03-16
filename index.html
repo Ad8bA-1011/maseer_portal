@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maseer Media - Register</title>
+    <title>Maseer Media - AI Video Marketing</title>
     
     <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://github.com; connect-src 'self' https://api.github.com; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline';">
@@ -11,315 +11,294 @@
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
-            color: #F8FAFC;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-        }
-        .container { max-width: 600px; margin: 0 auto; }
-        h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, #6B21A8, #EAB308);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-        .subtitle { text-align: center; color: #94a3b8; margin-bottom: 2rem; }
-        
-        .form {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        .field { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; color: #cbd5e1; }
-        .required { color: #EF4444; }
-        
-        input, select {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 0.4rem;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 0.95rem;
-        }
-        input:focus, select:focus { outline: none; border-color: #6B21A8; }
-        
-        .colors { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        input[type="color"] { width: 100%; height: 40px; padding: 0; border: none; }
-        
-        .checkbox {
-            display: flex;
-            gap: 0.5rem;
-            align-items: flex-start;
-            margin: 1rem 0;
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-        .checkbox input { width: auto; margin-top: 0.15rem; }
-        
-        button {
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, #6B21A8, #7c3aed);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        button:hover { opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .note {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background: rgba(234, 179, 8, 0.1);
-            border-left: 3px solid #EAB308;
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-        
-        #status {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 0.5rem;
-            text-align: center;
-        }
-        #status.active { display: block; }
-        #status a { color: #10B981; text-decoration: none; font-weight: 600; }
-        
-        .error {
-            display: none;
-            color: #EF4444;
-            font-size: 0.8rem;
-            margin-top: 0.3rem;
-        }
-        .error.show { display: block; }
-        
-        .privacy-notice {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 3px solid #3B82F6;
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🎯 MASEER</h1>
-        <p class="subtitle">AI Video Marketing for Afghan Businesses</p>
-        
-        <div class="form">
-            <form id="registerForm">
-                <div class="field">
-                    <label>Brand Name <span class="required">*</span></label>
-                    <input type="text" name="brand" id="brand" required placeholder="Zarrin Jewelry" maxlength="40" pattern="[\w\s\-]{2,50}">
-                    <div class="error" id="brandError">Required. Use letters, numbers, spaces, hyphens only (2-50 chars).</div>
-                </div>
-                
-                <div class="field">
-                    <label>Industry <span class="required">*</span></label>
-                    <select name="industry" id="industry" required>
-                        <option value="">Select...</option>
-                        <option>Jewelry & Gold</option>
-                        <option>Café & Restaurant</option>
-                        <option>Fashion & Clothing</option>
-                        <option>Technology & IT</option>
-                        <option>Healthcare & Medical</option>
-                        <option>Education & Training</option>
-                        <option>Real Estate</option>
-                        <option>Automotive</option>
-                        <option>Beauty & Cosmetics</option>
-                        <option>Construction & Materials</option>
-                        <option>Consultancy & Services</option>
-                        <option>Retail & Shopping</option>
-                        <option>Travel & Hospitality</option>
-                        <option>Agriculture</option>
-                        <option>Handicrafts</option>
-                    </select>
-                </div>
-                
-                <div class="colors">
-                    <div class="field">
-                        <label>Primary Color <span class="required">*</span></label>
-                        <input type="color" name="color1" id="color1" value="#6B21A8" required>
-                    </div>
-                    <div class="field">
-                        <label>Secondary Color</label>
-                        <input type="color" name="color2" id="color2" value="#EAB308">
-                    </div>
-                </div>
-                
-                <div class="field">
-                    <label>WhatsApp (optional)</label>
-                    <input type="text" name="whatsapp" id="whatsapp" placeholder="+93 70 123 4567" maxlength="20">
-                </div>
-                
-                <div class="field">
-                    <label>Key Products/Services (optional, brief)</label>
-                    <input type="text" name="offerings" id="offerings" placeholder="Handmade gold jewelry" maxlength="100">
-                </div>
-                
-                <div class="checkbox">
-                    <input type="checkbox" name="sample" id="sample" checked>
-                    <label for="sample">Request FREE sample video (3-5 min)</label>
-                </div>
-                
-                <div class="checkbox">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">I agree to receive 4 daily AI marketing videos</label>
-                </div>
-                
-                <button type="submit" id="btn">Create GitHub Issue</button>
-                
-                <div class="note">
-                    ⚠️ You will be redirected to GitHub to complete registration. Please attach your logo in the issue comment.
-                </div>
-                
-                <div class="privacy-notice">
-                    🔒 <strong>Privacy:</strong> We track form engagement to improve UX. No personal data is stored on our servers—all data goes to GitHub Issues. See our <a href="PRIVACY.md" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-                </div>
-                
-                <div id="status">
-                    ✅ Opening GitHub...<br>
-                    <a href="#" id="githubLink" target="_blank" rel="noopener noreferrer">Click here if not redirected</a>
-                </div>
-            </form>
-        </div>
+    <div class="bg-animation"></div>
+    
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="fa">فارسی</button>
+        <button class="lang-btn" data-lang="ps">پښتو</button>
     </div>
 
-    <script>
-        // Configuration
-        const CONFIG = {
-            BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
-            MAX_URL_LENGTH: 7000,  // GitHub has ~8KB limit, we stay safe at ~7KB
-            MAX_BODY_LENGTH: 4000
-        };
-        
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get values
-            const brand = document.getElementById('brand').value.trim();
-            const industry = document.getElementById('industry').value;
-            const color1 = document.getElementById('color1').value;
-            const color2 = document.getElementById('color2').value;
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const offerings = document.getElementById('offerings').value.trim();
-            const sample = document.getElementById('sample').checked;
-            
-            // Validate
-            if (!brand || brand.length < 2) {
-                document.getElementById('brandError').classList.add('show');
-                return;
-            }
-            
-            // Strict brand name validation
-            if (!/^[\w\s\-]{2,50}$/.test(brand)) {
-                document.getElementById('brandError').classList.add('show');
-                return;
-            }
-            
-            if (!industry) {
-                alert('Please select an industry');
-                return;
-            }
-            
-            // Build minimal body
-            const timestamp = new Date().toISOString();
-            const payload = {
-                brand_name: brand,
-                industry: industry,
-                primary_color: color1,
-                secondary_color: color2,
-                contact_info: whatsapp,
-                key_offerings: offerings,
-                request_sample: sample,
-                submitted_at: timestamp,
-                source: 'maseer_portal'
-            };
-            
-            // Create compact body
-            let body = `New Registration: ${brand}
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="logo">🎯 MASEER</h1>
+            <p class="tagline" data-i18n="tagline">AI Video Marketing for Afghan Businesses</p>
+            <div class="meta-badge">
+                <span>📐 1224×1536</span>
+                <span>•</span>
+                <span>Meta-Optimized</span>
+                <span>•</span>
+                <span>4 Videos/Day</span>
+            </div>
+        </section>
 
-Industry: ${industry}
-Primary Color: ${color1}
-Secondary Color: ${color2}
-WhatsApp: ${whatsapp || 'Not provided'}
-Sample Requested: ${sample ? 'Yes' : 'No'}
-Submitted: ${timestamp}
+        <!-- Campaign Preview -->
+        <section class="campaigns-preview">
+            <h2 class="section-title" data-i18n="schedule-title">Your Daily Video Schedule (Kabul Time)</h2>
+            <div class="campaigns-grid">
+                <div class="campaign-card" style="--campaign-color: #60A5FA;">
+                    <span class="campaign-icon">🌅</span>
+                    <div class="campaign-time">6:00 AM</div>
+                    <span class="campaign-lang">Persian/Dari</span>
+                    <h3 class="campaign-title" data-i18n="feat-morning">Celestial Morning</h3>
+                    <p class="campaign-desc" data-i18n="feat-morning-desc">Inspirational content to start the day</p>
+                </div>
+                <div class="campaign-card" style="--campaign-color: #D97706;">
+                    <span class="campaign-icon">🏛️</span>
+                    <div class="campaign-time">12:00 PM</div>
+                    <span class="campaign-lang">Pashto</span>
+                    <h3 class="campaign-title" data-i18n="feat-midday">Organic Midday</h3>
+                    <p class="campaign-desc" data-i18n="feat-midday-desc">Community trust & engagement</p>
+                </div>
+                <div class="campaign-card" style="--campaign-color: #A855F7;">
+                    <span class="campaign-icon">💼</span>
+                    <div class="campaign-time">6:00 PM</div>
+                    <span class="campaign-lang">Persian/Dari</span>
+                    <h3 class="campaign-title" data-i18n="feat-evening">Kinetic Evening</h3>
+                    <p class="campaign-desc" data-i18n="feat-evening-desc">Service promotion & conversions</p>
+                </div>
+                <div class="campaign-card" style="--campaign-color: #EC4899;">
+                    <span class="campaign-icon">🎭</span>
+                    <div class="campaign-time">12:00 AM</div>
+                    <span class="campaign-lang">English</span>
+                    <h3 class="campaign-title" data-i18n="feat-night">Tactile Night</h3>
+                    <p class="campaign-desc" data-i18n="feat-night-desc">Brand awareness & recall</p>
+                </div>
+            </div>
+        </section>
 
-Data JSON:
-${JSON.stringify(payload)}
+        <!-- Registration Form -->
+        <section class="form-card">
+            <div class="form-header">
+                <h2 data-i18n="form-title">Register Your Brand</h2>
+                <p>Complete all fields for optimal AI video generation</p>
+            </div>
 
----
-Reply with logo attachment (PNG/JPG, max 2MB)
-Portal: https://Ad8bA-1011.github.io/maseer_portal/`;
-            
-            // Check body length
-            if (body.length > CONFIG.MAX_BODY_LENGTH) {
-                alert('Form data too long. Please shorten product description.');
-                return;
-            }
-            
-            // Build URL
-            const title = encodeURIComponent(`New Registration: ${brand}`);
-            const encodedBody = encodeURIComponent(body);
-            const labels = encodeURIComponent('new-client,portal-registration');
-            
-            const url = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
-            
-            // Check URL length
-            if (url.length > CONFIG.MAX_URL_LENGTH) {
-                alert('Registration data too long. Please use shorter brand name or description.');
-                return;
-            }
-            
-            // Debug
-            console.log('URL length:', url.length);
-            
-            // Show status
-            document.getElementById('status').classList.add('active');
-            document.getElementById('githubLink').href = url;
-            document.getElementById('btn').disabled = true;
-            
-            // Store minimal data for next step (no logo in sessionStorage)
-            sessionStorage.setItem('maseer_pending_brand', brand);
-            sessionStorage.setItem('maseer_sample_requested', sample);
-            
-            // Try to open
-            const newWindow = window.open(url, '_blank');
-            
-            // Check if popup blocked
-            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-                alert('Popup blocked! Please allow popups for this site, or click the link below.');
-                document.getElementById('githubLink').style.color = '#EAB308';
-            } else {
-                // Success - redirect after delay
-                setTimeout(() => {
-                    window.location.href = 'success.html';
-                }, 1000);
-            }
-        });
-        
-        // Hide error on input
-        document.getElementById('brand').addEventListener('input', function() {
-            document.getElementById('brandError').classList.remove('show');
-        });
-    </script>
+            <form id="registerForm">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h3 class="section-subtitle" data-i18n="section-basic">Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label data-i18n="label-brand">Brand Name (English) <span class="required">*</span></label>
+                        <input type="text" name="client_name" id="client_name" required 
+                               placeholder="e.g., Zarrin Jewelry" maxlength="50" 
+                               pattern="[\w\s\-]{2,50}">
+                        <span class="field-error" data-i18n="error-brand">Please enter a valid brand name</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="label-category">Category/Industry <span class="required">*</span></label>
+                            <select name="category" id="category" required>
+                                <option value="" data-i18n="select-industry">Select industry...</option>
+                                <option value="Jewelry & Gold">Jewelry & Gold</option>
+                                <option value="Café & Restaurant">Café & Restaurant</option>
+                                <option value="Fashion & Clothing">Fashion & Clothing</option>
+                                <option value="Technology & IT">Technology & IT</option>
+                                <option value="Healthcare & Medical">Healthcare & Medical</option>
+                                <option value="Education & Training">Education & Training</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Automotive">Automotive</option>
+                                <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
+                                <option value="Construction & Materials">Construction & Materials</option>
+                                <option value="Consultancy & Services">Consultancy & Services</option>
+                                <option value="Retail & Shopping">Retail & Shopping</option>
+                                <option value="Travel & Hospitality">Travel & Hospitality</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Handicrafts">Handicrafts</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="label-subcategory">Sub-Category <span class="required">*</span></label>
+                            <select name="sub_category" id="sub_category" required disabled>
+                                <option value="" data-i18n="select-subcategory">Select category first</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label-target-audience">Target Audience <span class="required">*</span></label>
+                        <input type="text" name="target_audience" id="target_audience" required
+                               placeholder="e.g., Affluent women 25-45 in Kabul" maxlength="100">
+                    </div>
+                </div>
+
+                <!-- Brand Identity -->
+                <div class="form-section">
+                    <h3 class="section-subtitle" data-i18n="section-brand">Brand Identity</h3>
+                    
+                    <div class="form-row color-group">
+                        <div class="form-group">
+                            <label data-i18n="label-primary">Primary Brand Color <span class="required">*</span></label>
+                            <div class="color-input-wrapper">
+                                <input type="text" name="primary_brand_color" id="primary_brand_color" 
+                                       value="#6B21A8" required placeholder="#6B21A8" maxlength="7">
+                                <input type="color" id="primary_color_picker" value="#6B21A8">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="label-secondary">Secondary Brand Color</label>
+                            <div class="color-input-wrapper">
+                                <input type="text" name="secondary_brand_color" id="secondary_brand_color" 
+                                       value="#EAB308" placeholder="#EAB308" maxlength="7">
+                                <input type="color" id="secondary_color_picker" value="#EAB308">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="label-font">Font Preference</label>
+                            <select name="font_preference" id="font_preference">
+                                <option value="auto" data-i18n="font-auto">Auto (Campaign-based)</option>
+                                <option value="nastaliq" data-i18n="font-nastaliq">Nastaʿlīq (Traditional)</option>
+                                <option value="modern" data-i18n="font-modern">Modern Sans-Serif</option>
+                                <option value="bold" data-i18n="font-bold">Bold/Impact</option>
+                                <option value="elegant" data-i18n="font-elegant">Elegant/Script</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="label-language">Primary Language</label>
+                            <select name="language_preference" id="language_preference">
+                                <option value="auto" data-i18n="lang-auto">Auto (Campaign-based)</option>
+                                <option value="fa" data-i18n="lang-fa">Persian/Dari</option>
+                                <option value="ps" data-i18n="lang-ps">Pashto</option>
+                                <option value="en" data-i18n="lang-en">English</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label-logo">Brand Logo <span class="required">*</span></label>
+                        <div class="upload-zone" id="logoUpload">
+                            <span class="upload-icon">📎</span>
+                            <div class="upload-text" data-i18n="logo-placeholder">Click to upload logo (PNG/JPG/SVG, max 2MB)</div>
+                            <div class="upload-hint" data-i18n="logo-hint">Transparent PNG recommended</div>
+                            <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/svg+xml" required hidden>
+                        </div>
+                        <div class="file-preview" id="logoPreview">
+                            <img src="" alt="Logo preview" id="logoPreviewImg">
+                            <div class="file-info">
+                                <div class="file-name" id="logoFileName"></div>
+                                <div class="file-size" id="logoFileSize"></div>
+                            </div>
+                            <button type="button" class="remove-file" id="removeLogo">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marketing Content -->
+                <div class="form-section">
+                    <h3 class="section-subtitle" data-i18n="section-marketing">Marketing Content</h3>
+                    
+                    <div class="form-group">
+                        <label data-i18n="label-usp1">Key Selling Point #1 <span class="required">*</span></label>
+                        <input type="text" name="key_usp_1" id="key_usp_1" required
+                               placeholder="Main unique selling proposition" maxlength="80">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label-usp2">Key Selling Point #2</label>
+                        <input type="text" name="key_usp_2" id="key_usp_2"
+                               placeholder="Secondary unique selling proposition" maxlength="80">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label-offer">Current Offer/Promotion Focus</label>
+                        <input type="text" name="current_offer_focus" id="current_offer_focus"
+                               placeholder="e.g., Ramadan Sale, New Collection Launch" maxlength="60">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="label-seasonal">Seasonal/Cultural Theme</label>
+                            <select name="seasonal_theme" id="seasonal_theme">
+                                <option value="none" data-i18n="theme-none">None/General</option>
+                                <option value="ramadan" data-i18n="theme-ramadan">Ramadan</option>
+                                <option value="eid" data-i18n="theme-eid">Eid</option>
+                                <option value="nowruz" data-i18n="theme-nowruz">Nowruz</option>
+                                <option value="winter" data-i18n="theme-winter">Winter Season</option>
+                                <option value="spring" data-i18n="theme-spring">Spring/New Beginnings</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="label-meta">Meta/Facebook Page ID</label>
+                            <input type="text" name="meta_page_id" id="meta_page_id"
+                                   placeholder="For direct posting integration" maxlength="50">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="label-notes">Special Instructions for AI</label>
+                        <textarea name="ai_modification_notes" id="ai_modification_notes"
+                                  placeholder="Any specific requirements, things to emphasize or avoid..." 
+                                  maxlength="300" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Contact & Consent -->
+                <div class="form-section">
+                    <h3 class="section-subtitle" data-i18n="section-contact">Contact & Delivery</h3>
+                    
+                    <div class="form-group">
+                        <label data-i18n="label-whatsapp">WhatsApp Number <span class="required">*</span></label>
+                        <input type="tel" name="contact_info" id="contact_info" required
+                               placeholder="+93 70 123 4567" maxlength="20">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="request_sample" id="request_sample" checked>
+                            <span data-i18n="checkbox-sample">Request FREE sample video immediately (auto-generated in 3-5 minutes)</span>
+                        </label>
+                        
+                        <label class="checkbox">
+                            <input type="checkbox" name="terms" id="terms" required>
+                            <span data-i18n="checkbox-daily">I agree to receive 4 daily AI marketing videos and accept the terms</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="alert alert-error" id="errorAlert"></div>
+                <div class="alert alert-success" id="successAlert"></div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span data-i18n="btn-submit">🚀 Register & Generate Sample</span>
+                </button>
+
+                <div class="privacy-notice">
+                    <p>🔒 <span data-i18n="privacy-text">Your data is processed via GitHub Issues. No data stored on our servers.</span>
+                    <a href="PRIVACY.md" target="_blank" data-i18n="privacy-link">Privacy Policy</a></p>
+                </div>
+            </form>
+        </section>
+
+        <footer>
+            <p data-i18n="footer-tagline">Premium AI Video Marketing for Afghan Businesses</p>
+            <p class="powered-by">
+                <span>Powered by</span>
+                <strong>Maseer Media</strong>
+                <span>•</span>
+                <span>Kabul, Afghanistan</span>
+            </p>
+        </footer>
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/color-picker.js"></script>
+    <script src="assets/js/consciousness.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
