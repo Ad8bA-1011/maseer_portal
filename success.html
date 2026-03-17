@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="10;url=https://ad8ba-1011.github.io/maseer_portal/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Successful - Maseer Media</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,10 +42,32 @@
             -webkit-text-fill-color: transparent;
             font-weight: 700;
         }
-        .countdown {
-            color: #6B21A8;
-            font-weight: 600;
-            font-size: 1.25rem;
+        .status-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .status-box.processing {
+            background: rgba(107, 33, 168, 0.1);
+            border-color: rgba(107, 33, 168, 0.3);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(16, 185, 129, 0.3);
+            border-top-color: #10B981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .status-box.processing .spinner {
+            border-color: rgba(107, 33, 168, 0.3);
+            border-top-color: #6B21A8;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         .steps {
             background: rgba(255,255,255,0.05);
@@ -67,6 +89,15 @@
             margin: 0.75rem 0;
             line-height: 1.5;
         }
+        .steps li.active {
+            color: #10B981;
+            font-weight: 600;
+        }
+        .check-mark {
+            display: inline-block;
+            width: 20px;
+            color: #10B981;
+        }
         a { 
             color: #6B21A8; 
             text-decoration: none;
@@ -79,6 +110,20 @@
             font-size: 0.875rem;
             color: #64748b;
         }
+        .issue-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(107, 33, 168, 0.2);
+            border: 1px solid rgba(107, 33, 168, 0.5);
+            border-radius: 0.5rem;
+            color: #A855F7;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .issue-link:hover {
+            background: rgba(107, 33, 168, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -88,45 +133,85 @@
         
         <div class="brand-name" id="brandDisplay"></div>
         
+        <div class="status-box" id="statusBox">
+            <div class="spinner"></div>
+            <p><strong>Processing your registration...</strong></p>
+            <p style="font-size: 0.9375rem; margin-top: 0.5rem;">Sample video will be ready in 3-5 minutes</p>
+        </div>
+        
         <p>Your brand has been registered for <span class="highlight">AI Video Marketing</span>.</p>
         
         <div class="steps">
             <h3>📋 What happens next?</h3>
             <ol>
-                <li>Complete the GitHub issue creation (you'll be redirected automatically)</li>
-                <li>Our system will process your registration immediately</li>
-                <li><strong>Sample video generates automatically</strong> in 3-5 minutes</li>
-                <li>Receive your video via WhatsApp/Telegram</li>
-                <li>Daily videos begin tomorrow at 6 AM Kabul time</li>
+                <li class="active"><span class="check-mark">✓</span> Registration data saved</li>
+                <li><span class="check-mark">○</span> Logo processed</li>
+                <li><span class="check-mark">○</span> AI generating sample video</li>
+                <li><span class="check-mark">○</span> Video sent to your WhatsApp</li>
+                <li><span class="check-mark">○</span> Daily videos begin tomorrow at 6 AM Kabul time</li>
             </ol>
         </div>
         
-        <p class="countdown">Redirecting to homepage in <span id="timer">10</span> seconds...</p>
+        <p id="issueLinkContainer" style="display: none;">
+            <a href="#" id="issueLink" class="issue-link" target="_blank">View Registration on GitHub</a>
+        </p>
         
-        <p><a href="https://ad8ba-1011.github.io/maseer_portal/">Return home now</a></p>
+        <p><a href="https://ad8ba-1011.github.io/maseer_portal/">Return to Homepage</a></p>
         
         <div class="privacy">
             <p>🔒 Privacy: Registration data is processed via GitHub Issues. 
-            No data is stored on our servers. Sample video will be generated automatically.</p>
+            No data is stored on our servers.</p>
+            <p style="margin-top: 0.5rem;">Registration ID: <span id="clientIdDisplay"></span></p>
         </div>
     </div>
 
     <script>
-        // Display brand name if available
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const brandName = urlParams.get('brand');
+        const clientId = urlParams.get('id');
+        const status = urlParams.get('status');
+        
+        // Display brand info
+        if (brandName) {
+            document.getElementById('brandDisplay').textContent = brandName;
+        }
+        
+        if (clientId) {
+            document.getElementById('clientIdDisplay').textContent = clientId;
+        }
+        
+        // Update status based on response
+        if (status === 'success') {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎬</div>
+                <p><strong>Sample video is being generated!</strong></p>
+                <p style="font-size: 0.9375rem; margin-top: 0.5rem;">Check your WhatsApp in 3-5 minutes</p>
+            `;
+            statusBox.classList.remove('processing');
+        }
+        
+        // Check for stored registration data
         const regData = sessionStorage.getItem('maseer_registration');
         if (regData) {
             const data = JSON.parse(regData);
-            document.getElementById('brandDisplay').textContent = data.client_name;
+            if (data.client_name && !brandName) {
+                document.getElementById('brandDisplay').textContent = data.client_name;
+            }
         }
         
-        // Countdown timer
-        let seconds = 10;
-        const timerEl = document.getElementById('timer');
-        const interval = setInterval(() => {
-            seconds--;
-            timerEl.textContent = seconds;
-            if (seconds <= 0) clearInterval(interval);
-        }, 1000);
+        // Simulate progress updates
+        const steps = document.querySelectorAll('.steps li');
+        let currentStep = 0;
+        
+        setInterval(() => {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.add('active');
+                steps[currentStep].querySelector('.check-mark').textContent = '✓';
+                currentStep++;
+            }
+        }, 30000); // Update every 30 seconds
     </script>
 </body>
 </html>
