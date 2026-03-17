@@ -1,19 +1,23 @@
 /**
- * Maseer Portal - Main Application Logic v3
- * Enhanced UX with working sub-categories and step-by-step form
+ * Maseer Portal - Main Application Logic v5
+ * Direct API submission - No redirects, seamless experience
  */
 
 const App = (function() {
     'use strict';
 
-    const CONFIG = {
+    const CONFIG = window.CONFIG || {
         BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
-        MAX_LOGO_SIZE: 2 * 1024 * 1024, // 2MB
+        PUBLIC_WORKFLOW_TOKEN: null,
+        MAX_LOGO_SIZE: 2 * 1024 * 1024,
         MAX_URL_LENGTH: 7000,
-        SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/svg+xml']
+        SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/svg+xml'],
+        ENABLE_API_SUBMISSION: false,
+        ENABLE_FALLBACK_REDIRECT: true,
+        GITHUB_API_BASE: 'https://api.github.com',
+        WORKFLOW_REGISTRATION: 'submit-registration.yml'
     };
 
-    // Sub-categories data
     const SUB_CATEGORIES = {
         'Jewelry & Gold': [
             { value: 'Traditional Gold', label: 'Traditional Gold' },
@@ -136,25 +140,11 @@ const App = (function() {
         ]
     };
 
-    // Color psychology data
-    const COLOR_PSYCHOLOGY = {
-        '#6B21A8': { name: 'Purple', emotion: 'creativity, luxury, wisdom' },
-        '#EAB308': { name: 'Gold', emotion: 'success, quality, prestige' },
-        '#DC2626': { name: 'Red', emotion: 'energy, passion, urgency' },
-        '#059669': { name: 'Green', emotion: 'growth, health, harmony' },
-        '#2563EB': { name: 'Blue', emotion: 'trust, professionalism, calm' },
-        '#EA580C': { name: 'Orange', emotion: 'enthusiasm, creativity, warmth' },
-        '#0891B2': { name: 'Cyan', emotion: 'innovation, clarity, freshness' },
-        '#BE185D': { name: 'Pink', emotion: 'compassion, nurturing, love' },
-        '#4338CA': { name: 'Indigo', emotion: 'intuition, spirituality, depth' },
-        '#000000': { name: 'Black', emotion: 'elegance, power, sophistication' }
-    };
-
     let currentStep = 1;
     const totalSteps = 4;
     let logoFile = null;
     let logoBase64 = null;
-    let formData = {};
+    let isSubmitting = false;
 
     function init() {
         setupEventListeners();
@@ -167,19 +157,16 @@ const App = (function() {
     }
 
     function setupEventListeners() {
-        // Form submission
         const form = document.getElementById('registerForm');
         if (form) {
             form.addEventListener('submit', handleSubmit);
         }
 
-        // Category change
         const category = document.getElementById('category');
         if (category) {
             category.addEventListener('change', handleCategoryChange);
         }
 
-        // Phone input formatting
         const phone = document.getElementById('contact_info');
         if (phone) {
             phone.addEventListener('input', formatPhoneInput);
@@ -187,7 +174,6 @@ const App = (function() {
     }
 
     function setupSubCategories() {
-        // Initial state - disabled
         const subCategorySelect = document.getElementById('sub_category');
         if (subCategorySelect) {
             subCategorySelect.disabled = true;
@@ -205,16 +191,13 @@ const App = (function() {
             return;
         }
 
-        // Show loading
         if (loadingIndicator) {
             loadingIndicator.style.display = 'flex';
         }
         subCategorySelect.disabled = true;
 
-        // Simulate async loading for better UX
         setTimeout(() => {
             const subCategories = SUB_CATEGORIES[category] || [];
-            
             subCategorySelect.innerHTML = '<option value="">Select sub-category...</option>';
             
             subCategories.forEach(sub => {
@@ -225,16 +208,12 @@ const App = (function() {
             });
 
             subCategorySelect.disabled = false;
-            
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
-
-            // Add animation class
             subCategorySelect.classList.add('loaded');
             setTimeout(() => subCategorySelect.classList.remove('loaded'), 300);
-
-        }, 300); // Small delay for perceived performance
+        }, 300);
     }
 
     function setupColorPickers() {
@@ -245,7 +224,6 @@ const App = (function() {
         const secondaryPicker = document.getElementById('secondary_color_picker');
         const secondaryPreview = document.getElementById('secondaryColorPreview');
 
-        // Primary color
         if (primaryPicker && primaryText && primaryPreview) {
             primaryPicker.addEventListener('input', (e) => {
                 const color = e.target.value.toUpperCase();
@@ -264,7 +242,6 @@ const App = (function() {
             });
         }
 
-        // Secondary color
         if (secondaryPicker && secondaryText && secondaryPreview) {
             secondaryPicker.addEventListener('input', (e) => {
                 const color = e.target.value.toUpperCase();
@@ -283,7 +260,6 @@ const App = (function() {
             });
         }
 
-        // Suggest button
         const suggestBtn = document.getElementById('suggestSecondary');
         if (suggestBtn) {
             suggestBtn.addEventListener('click', () => {
@@ -293,12 +269,8 @@ const App = (function() {
                 secondaryText.value = complementary.toUpperCase();
                 document.getElementById('secondaryColorPreview').style.background = complementary;
                 updateColorPsychology('secondary', complementary.toUpperCase());
-                
-                // Visual feedback
-                suggestBtn.textContent = '✓ Applied';
-                setTimeout(() => {
-                    suggestBtn.textContent = 'Suggest Match';
-                }, 1500);
+                suggestBtn.textContent = 'Applied';
+                setTimeout(() => suggestBtn.textContent = 'Suggest Match', 1500);
             });
         }
     }
@@ -308,12 +280,9 @@ const App = (function() {
         const r = (rgb >> 16) & 0xFF;
         const g = (rgb >> 8) & 0xFF;
         const b = rgb & 0xFF;
-        
-        // Simple complementary - invert and adjust for aesthetics
         const compR = 255 - r;
         const compG = 255 - g;
         const compB = 255 - b;
-        
         return '#' + 
             Math.round((r + compR) / 2).toString(16).padStart(2, '0') +
             Math.round((g + compG) / 2).toString(16).padStart(2, '0') +
@@ -324,25 +293,30 @@ const App = (function() {
         const element = document.getElementById(type + 'Psychology');
         if (!element) return;
 
-        const psychology = COLOR_PSYCHOLOGY[color] || 
-            COLOR_PSYCHOLOGY[Object.keys(COLOR_PSYCHOLOGY).find(c => 
-                Math.abs(parseInt(c.slice(1), 16) - parseInt(color.slice(1), 16)) < 500000
-            )] || 
-            { name: 'Custom', emotion: 'unique to your brand' };
+        const psychology = {
+            '#6B21A8': { name: 'Purple', emotion: 'creativity, luxury, wisdom' },
+            '#EAB308': { name: 'Gold', emotion: 'success, quality, prestige' },
+            '#DC2626': { name: 'Red', emotion: 'energy, passion, urgency' },
+            '#059669': { name: 'Green', emotion: 'growth, health, harmony' },
+            '#2563EB': { name: 'Blue', emotion: 'trust, professionalism, calm' },
+            '#EA580C': { name: 'Orange', emotion: 'enthusiasm, creativity, warmth' },
+            '#0891B2': { name: 'Cyan', emotion: 'innovation, clarity, freshness' },
+            '#BE185D': { name: 'Pink', emotion: 'compassion, nurturing, love' },
+            '#4338CA': { name: 'Indigo', emotion: 'intuition, spirituality, depth' },
+            '#000000': { name: 'Black', emotion: 'elegance, power, sophistication' }
+        };
 
-        element.querySelector('span:last-child').textContent = 
-            `${psychology.name} conveys ${psychology.emotion}`;
+        const matched = psychology[color] || { name: 'Custom', emotion: 'unique to your brand' };
+        element.querySelector('span:last-child').textContent = `${matched.name} conveys ${matched.emotion}`;
     }
 
     function setupLogoUpload() {
         const uploadZone = document.getElementById('logoUpload');
         const fileInput = document.getElementById('logo');
-        const preview = document.getElementById('logoPreview');
         const removeBtn = document.getElementById('removeLogo');
 
         if (!uploadZone || !fileInput) return;
 
-        // Click to upload
         uploadZone.addEventListener('click', () => fileInput.click());
         uploadZone.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -351,7 +325,6 @@ const App = (function() {
             }
         });
 
-        // Drag and drop
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             uploadZone.addEventListener(eventName, preventDefaults, false);
         });
@@ -362,21 +335,16 @@ const App = (function() {
         }
 
         ['dragenter', 'dragover'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => {
-                uploadZone.classList.add('drag-active');
-            }, false);
+            uploadZone.addEventListener(eventName, () => uploadZone.classList.add('drag-active'), false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => {
-                uploadZone.classList.remove('drag-active');
-            }, false);
+            uploadZone.addEventListener(eventName, () => uploadZone.classList.remove('drag-active'), false);
         });
 
         uploadZone.addEventListener('drop', (e) => {
             const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length) handleLogoSelect(files[0]);
+            if (dt.files.length) handleLogoSelect(dt.files[0]);
         });
 
         fileInput.addEventListener('change', (e) => {
@@ -392,7 +360,6 @@ const App = (function() {
     }
 
     function handleLogoSelect(file) {
-        // Validation
         if (!CONFIG.SUPPORTED_FORMATS.includes(file.type)) {
             showToast('Please upload PNG, JPG, or SVG file only.', 'error');
             return;
@@ -405,15 +372,13 @@ const App = (function() {
 
         logoFile = file;
 
-        // Preview
         const reader = new FileReader();
         reader.onload = (e) => {
             logoBase64 = e.target.result;
             
             const img = new Image();
             img.onload = () => {
-                document.getElementById('logoDimensions').textContent = 
-                    `${img.naturalWidth}×${img.naturalHeight}px`;
+                document.getElementById('logoDimensions').textContent = `${img.naturalWidth}×${img.naturalHeight}px`;
             };
             img.src = logoBase64;
 
@@ -442,7 +407,8 @@ const App = (function() {
         
         fields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
-            const counter = document.getElementById(fieldId.replace('key_usp_', 'usp').replace('ai_modification_notes', 'notes') + 'Count');
+            const counterId = fieldId.replace('key_usp_', 'usp').replace('ai_modification_notes', 'notes') + 'Count';
+            const counter = document.getElementById(counterId);
             
             if (field && counter) {
                 field.addEventListener('input', () => {
@@ -453,7 +419,6 @@ const App = (function() {
     }
 
     function setupFormNavigation() {
-        // Next buttons
         document.querySelectorAll('.btn-next').forEach(btn => {
             btn.addEventListener('click', () => {
                 const nextStep = parseInt(btn.dataset.next);
@@ -463,7 +428,6 @@ const App = (function() {
             });
         });
 
-        // Previous buttons
         document.querySelectorAll('.btn-prev').forEach(btn => {
             btn.addEventListener('click', () => {
                 const prevStep = parseInt(btn.dataset.prev);
@@ -471,7 +435,6 @@ const App = (function() {
             });
         });
 
-        // Progress step clicks
         document.querySelectorAll('.progress-step').forEach((step, index) => {
             step.addEventListener('click', () => {
                 const targetStep = index + 1;
@@ -483,21 +446,17 @@ const App = (function() {
     }
 
     function goToStep(step) {
-        // Hide current step
         document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
         document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
         
-        // Show new step
         currentStep = step;
         document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
         document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
         
-        // Mark previous steps as completed
         for (let i = 1; i < currentStep; i++) {
             document.querySelector(`.progress-step[data-step="${i}"]`).classList.add('completed');
         }
         
-        // Update progress lines
         document.querySelectorAll('.progress-line').forEach((line, index) => {
             if (index < currentStep - 1) {
                 line.classList.add('completed');
@@ -507,16 +466,17 @@ const App = (function() {
         });
 
         updateProgress();
-        
-        // Scroll to top of form
         document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        if (step === 4) {
+            updateSummary();
+        }
     }
 
     function validateStep(step) {
         let valid = true;
         const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
         
-        // Required fields in this step
         const requiredFields = stepElement.querySelectorAll('[required]');
         
         requiredFields.forEach(field => {
@@ -532,7 +492,6 @@ const App = (function() {
             }
         });
 
-        // Special validation for logo on step 2
         if (step === 2 && !logoFile) {
             document.getElementById('logo-error').classList.add('show');
             valid = false;
@@ -560,7 +519,6 @@ const App = (function() {
             value = value.slice(0, 9);
         }
         
-        // Format as 70 123 4567
         if (value.length >= 2) {
             value = value.slice(0, 2) + ' ' + value.slice(2);
         }
@@ -593,23 +551,22 @@ const App = (function() {
     async function handleSubmit(e) {
         e.preventDefault();
         
+        if (isSubmitting) return;
         if (!validateStep(4)) return;
         
+        isSubmitting = true;
         const btn = document.getElementById('submitBtn');
         const btnText = btn.querySelector('.btn-text');
         const spinner = btn.querySelector('.spinner');
         
-        // Show loading
         btn.disabled = true;
         btnText.style.display = 'none';
         spinner.style.display = 'block';
 
         try {
-            // Generate client ID
             const clientId = 'MSR-' + Date.now().toString(36).toUpperCase();
             
-            // Collect all form data
-            const formData = {
+            const clientData = {
                 client_id: clientId,
                 client_name: document.getElementById('client_name').value.trim(),
                 category: document.getElementById('category').value,
@@ -628,84 +585,137 @@ const App = (function() {
                 contact_info: '+93 ' + document.getElementById('contact_info').value.trim(),
                 request_sample: document.getElementById('request_sample').checked,
                 submitted_at: new Date().toISOString(),
-                source: 'maseer_portal_v3'
+                source: 'maseer_portal_api_v5',
+                campaigns_completed: [],
+                sample_generated: false,
+                total_videos: 0,
+                signup_date: new Date().toISOString()
             };
 
-            // Store for success page
             sessionStorage.setItem('maseer_registration', JSON.stringify({
                 client_id: clientId,
-                client_name: formData.client_name,
-                request_sample: formData.request_sample
+                client_name: clientData.client_name,
+                request_sample: clientData.request_sample
             }));
 
-            // Build issue body
-            const issueBody = buildIssueBody(formData, logoBase64);
-            
-            // Create GitHub Issue URL
-            const title = encodeURIComponent(`New Registration: ${formData.client_name} [${clientId}]`);
-            const body = encodeURIComponent(issueBody);
-            const labels = encodeURIComponent('new-client,portal-registration,v3');
-            
-            const githubUrl = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${body}&labels=${labels}`;
-
-            // Check URL length
-            if (githubUrl.length > CONFIG.MAX_URL_LENGTH) {
-                // Store logo for separate upload
-                sessionStorage.setItem('maseer_logo_base64', logoBase64);
-                window.location.href = `upload-logo.html?brand=${encodeURIComponent(formData.client_name)}&id=${clientId}`;
-                return;
+            if (CONFIG.ENABLE_API_SUBMISSION && CONFIG.PUBLIC_WORKFLOW_TOKEN) {
+                const success = await submitViaAPI(clientData, logoBase64);
+                if (success) {
+                    showSubmissionSuccess(clientData.client_name);
+                    setTimeout(() => {
+                        window.location.href = `success.html?brand=${encodeURIComponent(clientData.client_name)}&id=${clientId}&auto=true&status=processing`;
+                    }, 2000);
+                    return;
+                }
+                console.warn('API failed, using fallback');
             }
 
-            // Success - redirect to GitHub
-            window.location.href = githubUrl;
+            if (CONFIG.ENABLE_FALLBACK_REDIRECT) {
+                fallbackToGithubRedirect(clientData, logoBase64);
+            } else {
+                throw new Error('API submission failed and fallback disabled');
+            }
 
         } catch (error) {
-            showToast('An error occurred. Please try again.', 'error');
             console.error('Submission error:', error);
+            showToast('Submission failed. Please try again.', 'error');
+            
             btn.disabled = false;
             btnText.style.display = 'block';
             spinner.style.display = 'none';
+            isSubmitting = false;
         }
     }
 
-    function buildIssueBody(data, logoData) {
+    async function submitViaAPI(clientData, logoBase64Data) {
+        const apiUrl = `${CONFIG.GITHUB_API_BASE}/repos/${CONFIG.BACKEND_REPO}/actions/workflows/${CONFIG.WORKFLOW_REGISTRATION}/dispatches`;
+        
+        console.log('Submitting to workflow:', apiUrl);
+        
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${CONFIG.PUBLIC_WORKFLOW_TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                    'X-GitHub-Api-Version': '2022-11-28'
+                },
+                body: JSON.stringify({
+                    ref: 'main',
+                    inputs: {
+                        client_json: JSON.stringify(clientData),
+                        logo_base64: logoBase64Data || ''
+                    }
+                })
+            });
+
+            if (response.status === 204) {
+                console.log('Workflow dispatched successfully');
+                return true;
+            } else if (response.status === 401) {
+                console.error('Token invalid or expired');
+                return false;
+            } else if (response.status === 404) {
+                console.error('Workflow not found - check WORKFLOW_REGISTRATION name');
+                return false;
+            } else {
+                const errorText = await response.text();
+                console.error(`API error ${response.status}:`, errorText);
+                return false;
+            }
+        } catch (networkError) {
+            console.error('Network error:', networkError);
+            return false;
+        }
+    }
+
+    function fallbackToGithubRedirect(clientData, logoBase64Data) {
+        console.log('Using fallback redirect');
+        
+        const title = encodeURIComponent(`New Registration: ${clientData.client_name} [${clientData.client_id}]`);
+        
         const payload = {
-            ...data,
-            logo_included: !!logoData
+            ...clientData,
+            logo_included: !!logoBase64Data
         };
+        
+        const body = encodeURIComponent(`## New Registration via Maseer Portal
 
-        let body = `## 🎯 New Registration via Maseer Portal
+**Client ID:** ${clientData.client_id}
+**Brand:** ${clientData.client_name}
+**Submitted:** ${clientData.submitted_at}
 
-**Client ID:** ${data.client_id}
-**Brand:** ${data.client_name}
-**Submitted:** ${data.submitted_at}
-
-### 📋 Complete Registration Data
+### Registration Data
 
 \`\`\`json
 ${JSON.stringify(payload, null, 2)}
-\`\`\``;
+\`\`\`
 
-        if (logoData) {
-            body += `
-
-### 🎨 Logo Attachment
-
-Logo is embedded in registration data.
-`;
-        }
-
-        body += `
+${logoBase64Data ? 'Logo is embedded in registration data.' : 'Logo not provided'}
 
 ---
 
-**Auto-Processing:** Sample video will be generated automatically upon issue creation.
-**ETA:** 3-5 minutes after processing.
+*Auto-processing enabled*
+`);
+        
+        const labels = encodeURIComponent('new-client,portal-registration,fallback');
+        const githubUrl = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${body}&labels=${labels}`;
 
-*Registered via [Maseer Portal](https://ad8ba-1011.github.io/maseer_portal/)*
-*Questions: adeeb.yousofi12@gmail.com*`;
+        if (githubUrl.length > CONFIG.MAX_URL_LENGTH) {
+            sessionStorage.setItem('maseer_logo_base64', logoBase64Data);
+            sessionStorage.setItem('maseer_pending_client', JSON.stringify(clientData));
+            window.location.href = `upload-logo.html?brand=${encodeURIComponent(clientData.client_name)}&id=${clientData.client_id}`;
+        } else {
+            window.location.href = githubUrl;
+        }
+    }
 
-        return body;
+    function showSubmissionSuccess(brandName) {
+        const btn = document.getElementById('submitBtn');
+        btn.innerHTML = `<span style="font-size: 1.5rem;">✅</span><span>Registration Submitted!</span>`;
+        btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+        showToast(`Success! ${brandName} is now registered.`, 'success');
     }
 
     function showToast(message, type = 'info') {
