@@ -1,23 +1,21 @@
 /**
- * Maseer Portal - Main Application Logic v5
- * Direct API submission - No redirects, seamless experience
+ * Maseer Portal - Main Application Logic v4
+ * Direct GitHub API Integration - No Redirects
  */
 
 const App = (function() {
     'use strict';
 
-    const CONFIG = window.CONFIG || {
+    // GitHub Configuration - Using fine-grained PAT with issues:write only
+    const CONFIG = {
+        GITHUB_TOKEN: 'ghp_YOUR_FINE_GRAINED_PAT_HERE', // Replace with actual token
         BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
-        PUBLIC_WORKFLOW_TOKEN: null,
-        MAX_LOGO_SIZE: 2 * 1024 * 1024,
+        MAX_LOGO_SIZE: 2 * 1024 * 1024, // 2MB
         MAX_URL_LENGTH: 7000,
-        SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/svg+xml'],
-        ENABLE_API_SUBMISSION: false,
-        ENABLE_FALLBACK_REDIRECT: true,
-        GITHUB_API_BASE: 'https://api.github.com',
-        WORKFLOW_REGISTRATION: 'submit-registration.yml'
+        SUPPORTED_FORMATS: ['image/png', 'image/jpeg', 'image/svg+xml']
     };
 
+    // Sub-categories data
     const SUB_CATEGORIES = {
         'Jewelry & Gold': [
             { value: 'Traditional Gold', label: 'Traditional Gold' },
@@ -144,7 +142,7 @@ const App = (function() {
     const totalSteps = 4;
     let logoFile = null;
     let logoBase64 = null;
-    let isSubmitting = false;
+    let formData = {};
 
     function init() {
         setupEventListeners();
@@ -198,6 +196,7 @@ const App = (function() {
 
         setTimeout(() => {
             const subCategories = SUB_CATEGORIES[category] || [];
+            
             subCategorySelect.innerHTML = '<option value="">Select sub-category...</option>';
             
             subCategories.forEach(sub => {
@@ -208,11 +207,14 @@ const App = (function() {
             });
 
             subCategorySelect.disabled = false;
+            
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
+
             subCategorySelect.classList.add('loaded');
             setTimeout(() => subCategorySelect.classList.remove('loaded'), 300);
+
         }, 300);
     }
 
@@ -229,7 +231,6 @@ const App = (function() {
                 const color = e.target.value.toUpperCase();
                 primaryText.value = color;
                 primaryPreview.style.background = color;
-                updateColorPsychology('primary', color);
             });
 
             primaryText.addEventListener('change', (e) => {
@@ -237,7 +238,6 @@ const App = (function() {
                 if (/^#[0-9A-F]{6}$/.test(color)) {
                     primaryPicker.value = color;
                     primaryPreview.style.background = color;
-                    updateColorPsychology('primary', color);
                 }
             });
         }
@@ -247,7 +247,6 @@ const App = (function() {
                 const color = e.target.value.toUpperCase();
                 secondaryText.value = color;
                 secondaryPreview.style.background = color;
-                updateColorPsychology('secondary', color);
             });
 
             secondaryText.addEventListener('change', (e) => {
@@ -255,7 +254,6 @@ const App = (function() {
                 if (/^#[0-9A-F]{6}$/.test(color)) {
                     secondaryPicker.value = color;
                     secondaryPreview.style.background = color;
-                    updateColorPsychology('secondary', color);
                 }
             });
         }
@@ -268,9 +266,11 @@ const App = (function() {
                 secondaryPicker.value = complementary;
                 secondaryText.value = complementary.toUpperCase();
                 document.getElementById('secondaryColorPreview').style.background = complementary;
-                updateColorPsychology('secondary', complementary.toUpperCase());
-                suggestBtn.textContent = 'Applied';
-                setTimeout(() => suggestBtn.textContent = 'Suggest Match', 1500);
+                
+                suggestBtn.textContent = '✓ Applied';
+                setTimeout(() => {
+                    suggestBtn.textContent = 'Suggest Match';
+                }, 1500);
             });
         }
     }
@@ -280,39 +280,21 @@ const App = (function() {
         const r = (rgb >> 16) & 0xFF;
         const g = (rgb >> 8) & 0xFF;
         const b = rgb & 0xFF;
+        
         const compR = 255 - r;
         const compG = 255 - g;
         const compB = 255 - b;
+        
         return '#' + 
             Math.round((r + compR) / 2).toString(16).padStart(2, '0') +
             Math.round((g + compG) / 2).toString(16).padStart(2, '0') +
             Math.round((b + compB) / 2).toString(16).padStart(2, '0');
     }
 
-    function updateColorPsychology(type, color) {
-        const element = document.getElementById(type + 'Psychology');
-        if (!element) return;
-
-        const psychology = {
-            '#6B21A8': { name: 'Purple', emotion: 'creativity, luxury, wisdom' },
-            '#EAB308': { name: 'Gold', emotion: 'success, quality, prestige' },
-            '#DC2626': { name: 'Red', emotion: 'energy, passion, urgency' },
-            '#059669': { name: 'Green', emotion: 'growth, health, harmony' },
-            '#2563EB': { name: 'Blue', emotion: 'trust, professionalism, calm' },
-            '#EA580C': { name: 'Orange', emotion: 'enthusiasm, creativity, warmth' },
-            '#0891B2': { name: 'Cyan', emotion: 'innovation, clarity, freshness' },
-            '#BE185D': { name: 'Pink', emotion: 'compassion, nurturing, love' },
-            '#4338CA': { name: 'Indigo', emotion: 'intuition, spirituality, depth' },
-            '#000000': { name: 'Black', emotion: 'elegance, power, sophistication' }
-        };
-
-        const matched = psychology[color] || { name: 'Custom', emotion: 'unique to your brand' };
-        element.querySelector('span:last-child').textContent = `${matched.name} conveys ${matched.emotion}`;
-    }
-
     function setupLogoUpload() {
         const uploadZone = document.getElementById('logoUpload');
         const fileInput = document.getElementById('logo');
+        const preview = document.getElementById('logoPreview');
         const removeBtn = document.getElementById('removeLogo');
 
         if (!uploadZone || !fileInput) return;
@@ -335,16 +317,21 @@ const App = (function() {
         }
 
         ['dragenter', 'dragover'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => uploadZone.classList.add('drag-active'), false);
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.add('drag-active');
+            }, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => uploadZone.classList.remove('drag-active'), false);
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.remove('drag-active');
+            }, false);
         });
 
         uploadZone.addEventListener('drop', (e) => {
             const dt = e.dataTransfer;
-            if (dt.files.length) handleLogoSelect(dt.files[0]);
+            const files = dt.files;
+            if (files.length) handleLogoSelect(files[0]);
         });
 
         fileInput.addEventListener('change', (e) => {
@@ -378,7 +365,8 @@ const App = (function() {
             
             const img = new Image();
             img.onload = () => {
-                document.getElementById('logoDimensions').textContent = `${img.naturalWidth}×${img.naturalHeight}px`;
+                document.getElementById('logoDimensions').textContent = 
+                    `${img.naturalWidth}×${img.naturalHeight}px`;
             };
             img.src = logoBase64;
 
@@ -466,11 +454,8 @@ const App = (function() {
         });
 
         updateProgress();
-        document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        if (step === 4) {
-            updateSummary();
-        }
+        document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function validateStep(step) {
@@ -548,13 +533,12 @@ const App = (function() {
             `).join('');
     }
 
+    // Main submission handler - Direct GitHub API Call
     async function handleSubmit(e) {
         e.preventDefault();
         
-        if (isSubmitting) return;
         if (!validateStep(4)) return;
         
-        isSubmitting = true;
         const btn = document.getElementById('submitBtn');
         const btnText = btn.querySelector('.btn-text');
         const spinner = btn.querySelector('.spinner');
@@ -564,9 +548,11 @@ const App = (function() {
         spinner.style.display = 'block';
 
         try {
+            // Generate client ID
             const clientId = 'MSR-' + Date.now().toString(36).toUpperCase();
             
-            const clientData = {
+            // Collect all form data
+            const formData = {
                 client_id: clientId,
                 client_name: document.getElementById('client_name').value.trim(),
                 category: document.getElementById('category').value,
@@ -585,137 +571,120 @@ const App = (function() {
                 contact_info: '+93 ' + document.getElementById('contact_info').value.trim(),
                 request_sample: document.getElementById('request_sample').checked,
                 submitted_at: new Date().toISOString(),
-                source: 'maseer_portal_api_v5',
-                campaigns_completed: [],
-                sample_generated: false,
-                total_videos: 0,
-                signup_date: new Date().toISOString()
+                source: 'maseer_portal_v4_direct_api'
             };
 
+            // Store for success page
             sessionStorage.setItem('maseer_registration', JSON.stringify({
                 client_id: clientId,
-                client_name: clientData.client_name,
-                request_sample: clientData.request_sample
+                client_name: formData.client_name,
+                request_sample: formData.request_sample
             }));
 
-            if (CONFIG.ENABLE_API_SUBMISSION && CONFIG.PUBLIC_WORKFLOW_TOKEN) {
-                const success = await submitViaAPI(clientData, logoBase64);
-                if (success) {
-                    showSubmissionSuccess(clientData.client_name);
-                    setTimeout(() => {
-                        window.location.href = `success.html?brand=${encodeURIComponent(clientData.client_name)}&id=${clientId}&auto=true&status=processing`;
-                    }, 2000);
-                    return;
-                }
-                console.warn('API failed, using fallback');
-            }
-
-            if (CONFIG.ENABLE_FALLBACK_REDIRECT) {
-                fallbackToGithubRedirect(clientData, logoBase64);
+            // Build issue body with embedded data
+            const issueBody = buildIssueBody(formData, logoBase64);
+            const issueTitle = `New Registration: ${formData.client_name} [${clientId}]`;
+            
+            // Create issue via GitHub API
+            const response = await createGitHubIssue(issueTitle, issueBody, ['new-client', 'portal-registration', 'auto-process']);
+            
+            if (response.success) {
+                // Redirect to success page
+                window.location.href = `success.html?brand=${encodeURIComponent(formData.client_name)}&id=${clientId}&status=success`;
             } else {
-                throw new Error('API submission failed and fallback disabled');
+                throw new Error(response.error || 'Failed to create registration');
             }
 
         } catch (error) {
             console.error('Submission error:', error);
-            showToast('Submission failed. Please try again.', 'error');
-            
+            showToast('Registration failed: ' + error.message, 'error');
             btn.disabled = false;
             btnText.style.display = 'block';
             spinner.style.display = 'none';
-            isSubmitting = false;
         }
     }
 
-    async function submitViaAPI(clientData, logoBase64Data) {
-        const apiUrl = `${CONFIG.GITHUB_API_BASE}/repos/${CONFIG.BACKEND_REPO}/actions/workflows/${CONFIG.WORKFLOW_REGISTRATION}/dispatches`;
-        
-        console.log('Submitting to workflow:', apiUrl);
+    // Direct GitHub API Call to create issue
+    async function createGitHubIssue(title, body, labels) {
+        const url = `https://api.github.com/repos/${CONFIG.BACKEND_REPO}/issues`;
         
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${CONFIG.PUBLIC_WORKFLOW_TOKEN}`,
-                    'Accept': 'application/vnd.github.v3+json',
+                    'Authorization': `Bearer ${CONFIG.GITHUB_TOKEN}`,
+                    'Accept': 'application/vnd.github+json',
                     'Content-Type': 'application/json',
                     'X-GitHub-Api-Version': '2022-11-28'
                 },
                 body: JSON.stringify({
-                    ref: 'main',
-                    inputs: {
-                        client_json: JSON.stringify(clientData),
-                        logo_base64: logoBase64Data || ''
-                    }
+                    title: title,
+                    body: body,
+                    labels: labels
                 })
             });
 
-            if (response.status === 204) {
-                console.log('Workflow dispatched successfully');
-                return true;
-            } else if (response.status === 401) {
-                console.error('Token invalid or expired');
-                return false;
-            } else if (response.status === 404) {
-                console.error('Workflow not found - check WORKFLOW_REGISTRATION name');
-                return false;
-            } else {
-                const errorText = await response.text();
-                console.error(`API error ${response.status}:`, errorText);
-                return false;
+            if (!response.ok) {
+                const error = await response.json();
+                return {
+                    success: false,
+                    error: error.message || `HTTP ${response.status}`
+                };
             }
-        } catch (networkError) {
-            console.error('Network error:', networkError);
-            return false;
+
+            const data = await response.json();
+            return {
+                success: true,
+                issueNumber: data.number,
+                issueUrl: data.html_url
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message
+            };
         }
     }
 
-    function fallbackToGithubRedirect(clientData, logoBase64Data) {
-        console.log('Using fallback redirect');
-        
-        const title = encodeURIComponent(`New Registration: ${clientData.client_name} [${clientData.client_id}]`);
-        
+    function buildIssueBody(data, logoData) {
         const payload = {
-            ...clientData,
-            logo_included: !!logoBase64Data
+            ...data,
+            logo_included: !!logoData,
+            logo_base64: logoData || null
         };
-        
-        const body = encodeURIComponent(`## New Registration via Maseer Portal
 
-**Client ID:** ${clientData.client_id}
-**Brand:** ${clientData.client_name}
-**Submitted:** ${clientData.submitted_at}
+        let body = `## 🎯 New Registration via Maseer Portal
 
-### Registration Data
+**Client ID:** ${data.client_id}
+**Brand:** ${data.client_name}
+**Sample Requested:** ${data.request_sample ? 'Yes ✓' : 'No'}
+**Submitted:** ${data.submitted_at}
+
+### 📋 Complete Registration Data
 
 \`\`\`json
 ${JSON.stringify(payload, null, 2)}
 \`\`\`
 
-${logoBase64Data ? 'Logo is embedded in registration data.' : 'Logo not provided'}
+---
+
+### 🎨 Logo Status
+${logoData ? '✅ Logo embedded in JSON (base64)' : '⚠️ No logo provided'}
 
 ---
 
-*Auto-processing enabled*
-`);
-        
-        const labels = encodeURIComponent('new-client,portal-registration,fallback');
-        const githubUrl = `https://github.com/${CONFIG.BACKEND_REPO}/issues/new?title=${title}&body=${body}&labels=${labels}`;
+**Auto-Processing:** ENABLED
+**Next Steps:**
+1. Parse registration data
+2. Save to clients.json
+3. Extract and save logo
+4. Trigger sample generation (if requested)
 
-        if (githubUrl.length > CONFIG.MAX_URL_LENGTH) {
-            sessionStorage.setItem('maseer_logo_base64', logoBase64Data);
-            sessionStorage.setItem('maseer_pending_client', JSON.stringify(clientData));
-            window.location.href = `upload-logo.html?brand=${encodeURIComponent(clientData.client_name)}&id=${clientData.client_id}`;
-        } else {
-            window.location.href = githubUrl;
-        }
-    }
+*Registered via [Maseer Portal](https://ad8ba-1011.github.io/maseer_portal/)*
+*Questions: adeeb.yousofi12@gmail.com*`;
 
-    function showSubmissionSuccess(brandName) {
-        const btn = document.getElementById('submitBtn');
-        btn.innerHTML = `<span style="font-size: 1.5rem;">✅</span><span>Registration Submitted!</span>`;
-        btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
-        showToast(`Success! ${brandName} is now registered.`, 'success');
+        return body;
     }
 
     function showToast(message, type = 'info') {
