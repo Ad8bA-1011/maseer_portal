@@ -8,7 +8,7 @@ const App = (function() {
 
     // GitHub Configuration - Using fine-grained PAT with issues:write only
     const CONFIG = {
-        GITHUB_TOKEN: 'ghp_YOUR_FINE_GRAINED_PAT_HERE', // Replace with actual token
+        GITHUB_TOKEN: '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', // Replace with actual token
         BACKEND_REPO: 'Ad8bA-1011/maseer_automation',
         MAX_LOGO_SIZE: 2 * 1024 * 1024, // 2MB
         MAX_URL_LENGTH: 7000,
